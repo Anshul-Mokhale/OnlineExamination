@@ -11,6 +11,12 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
 }
 
 ?>
+<style>
+    .table-responsive {
+        overflow-x: auto !important;
+    }
+</style>
+
 <div class="container-scroller">
     <?php include_once('components/navbar.php'); ?>
     <div class="container-fluid page-body-wrapper">
@@ -56,8 +62,8 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                 <div class="row">
                     <div class="col-lg-12 grid-margin stretch-card">
                         <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Bordered table</h4>
+                            <div class="card-body table-responsive">
+                                <!-- <h4 class="card-title">Bordered table</h4> -->
                                 <table class="table table-bordered" id="courseTable">
                                     <thead>
                                         <tr>

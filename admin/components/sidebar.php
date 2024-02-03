@@ -1,4 +1,9 @@
 <!-- partial:partials/_sidebar.html -->
+<style>
+    .sidebar {
+        font-family: 'Nunito Sans', sans-serif !important;
+    }
+</style>
 <nav class="sidebar sidebar-offcanvas " id="sidebar">
     <ul class="nav">
         <li class="nav-item nav-profile">
@@ -34,6 +39,13 @@
                 <span class="menu-title">Students</span>
                 <!-- <i class="menu-arrow"></i> -->
                 <i class="mdi mdi-account menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="exam.php">
+                <span class="menu-title">Exam</span>
+                <!-- <i class="menu-arrow"></i> -->
+                <i class="mdi mdi-pencil-box menu-icon"></i>
             </a>
         </li>
         <!-- <li class="nav-item">

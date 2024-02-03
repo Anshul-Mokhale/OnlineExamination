@@ -50,14 +50,14 @@ if (!empty($_GET['msg']) && $_GET['msg'] === "login") {
                         <h3 class="page-title">
                             <span class="page-title-icon bg-gradient-primary text-white me-2">
                                 <i class="mdi mdi-home"></i>
-                            </span> Student
+                            </span> Exam Section
                         </h3>
                         <nav aria-label="breadcrumb">
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item active" aria-current="page">
-                                    <a href="addStudent.php"
-                                        class="page-title-icon bg-gradient-primary text-white me-2 mark">Add Students
-                                        <i class="mdi mdi-account-plus"></i></a>
+                                    <a href="addExam.php"
+                                        class="page-title-icon bg-gradient-primary text-white me-2 mark">Add Exam
+                                        <i class="mdi mdi-pencil-box-outline"></i></a>
                                 </li>
                             </ul>
                         </nav>
@@ -67,13 +67,16 @@ if (!empty($_GET['msg']) && $_GET['msg'] === "login") {
                             <div class="card">
                                 <div class="card-body table-responsive">
                                     <!-- <h4 class="card-title">Bordered table</h4> -->
-                                    <table class="table table-bordered" id="courseTable">
+                                    <table class="table table-bordered " id="courseTable">
                                         <thead>
                                             <tr>
                                                 <th> Sr </th>
-                                                <th> Student Name </th>
-                                                <th> Email </th>
-                                                <th> Phone </th>
+                                                <th> Exam Name </th>
+                                                <th> Course </th>
+                                                <th> Mode </th>
+                                                <th> Date And Time </th>
+                                                <th> Time Limit (min) </th>
+                                                <th> Number of Questions </th>
                                                 <th> Action </th>
                                             </tr>
                                         </thead>
@@ -96,18 +99,18 @@ if (!empty($_GET['msg']) && $_GET['msg'] === "login") {
                                 tableBody.empty(); // Clear existing rows
                                 var i = 1;
 
-                                if (data.length === 0) {
-                                    // If no data is present, display a message
-                                    tableBody.append("<tr><td colspan='10' class='text-center'>No data available</td></tr>");
-                                } else {
+                                if (data && data.length > 0) {
                                     // Iterate through the data and append rows to the table
                                     $.each(data, function (index, item) {
                                         var row = "<tr>" +
-                                            "<td>" + item['id'] + "</td>" +
-                                            "<td>" + item['name'] + "</td>" +
-                                            "<td>" + item['email'] + "</td>" +
-                                            "<td>" + item['phone'] + "</td>" +
-                                            "<td><a href='updateStudent.php?id=" + item['id'] + "' class='btn-gradient-light' style ='padding: 5px; text-decoration: none;'>Update</a> <button class='btn btn-danger btn-sm deleteBtn' data-id='" + item['id'] + "'>Delete</button></td>"
+                                            "<td>" + i + "</td>" +
+                                            "<td>" + item['course_name'] + "</td>" +
+                                            "<td>" + item['exam_name'] + "</td>" +
+                                            "<td>" + item['mode'] + "</td>" +
+                                            "<td>" + item['date_time'] + "</td>" +
+                                            "<td>" + item['time_limit'] + "</td>" +
+                                            "<td>" + item['number_of_questions'] + "</td>" +
+                                            "<td><a href='addQuestion.php?id=" + item['id'] + "' class='btn-gradient-success' style ='padding: 5px; text-decoration: none;'>Add Question</a> <a href='updateExam.php?id=" + item['id'] + "' class='btn-gradient-light' style ='padding: 5px; text-decoration: none;'>Update</a> <button class='btn btn-danger btn-sm deleteBtn' data-id='" + item['id'] + "'>Delete</button></td>"
                                         "</tr>";
                                         i++;
                                         tableBody.append(row);
@@ -117,13 +120,17 @@ if (!empty($_GET['msg']) && $_GET['msg'] === "login") {
                                         // Make an AJAX request to delete the course
                                         deleteCourse(studentId);
                                     });
+
+                                } else {
+                                    // If no data is present, display a message
+                                    tableBody.append("<tr><td colspan='10' class='text-center'>No data available</td></tr>");
                                 }
                             }
 
                             // Make an AJAX request to fetch user data
                             $.ajax({
                                 type: "GET",
-                                url: "BackendAPI/getStudents.php", // Replace with the actual path to your PHP file
+                                url: "BackendAPI/getExam.php", // Replace with the actual path to your PHP file
                                 dataType: "json",
                                 success: function (data) {
                                     // Populate the table with user details
@@ -137,9 +144,10 @@ if (!empty($_GET['msg']) && $_GET['msg'] === "login") {
                             function deleteCourse(studentId) {
                                 $.ajax({
                                     type: "POST",
-                                    url: "BackendAPI/deleteStudent.php", // Replace with the actual path to your deleteCourse.php file
+                                    url: "BackendAPI/deleteExam.php", // Replace with the actual path to your deleteCourse.php file
                                     data: { id: studentId },
                                     success: function (response) {
+                                        console.log(response);
                                         try {
                                             var jsonResponse = JSON.parse(response);
                                             if (jsonResponse.status === "success") {
