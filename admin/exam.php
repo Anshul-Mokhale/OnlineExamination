@@ -71,8 +71,8 @@ if (!empty($_GET['msg']) && $_GET['msg'] === "login") {
                                         <thead>
                                             <tr>
                                                 <th> Sr </th>
-                                                <th> Exam Name </th>
                                                 <th> Course </th>
+                                                <th> Exam Name </th>
                                                 <th> Mode </th>
                                                 <th> Date And Time </th>
                                                 <th> Time Limit (min) </th>

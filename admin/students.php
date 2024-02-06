@@ -66,7 +66,6 @@ if (!empty($_GET['msg']) && $_GET['msg'] === "login") {
                         <div class="col-lg-12 grid-margin stretch-card">
                             <div class="card">
                                 <div class="card-body table-responsive">
-                                    <!-- <h4 class="card-title">Bordered table</h4> -->
                                     <table class="table table-bordered" id="courseTable">
                                         <thead>
                                             <tr>
@@ -86,6 +85,7 @@ if (!empty($_GET['msg']) && $_GET['msg'] === "login") {
                         </div>
                     </div>
                     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+                    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
                     <script>
                         $(document).ready(function () {
                             var out = $('#message');
@@ -128,6 +128,7 @@ if (!empty($_GET['msg']) && $_GET['msg'] === "login") {
                                 success: function (data) {
                                     // Populate the table with user details
                                     populateTable(data);
+                                    $('#courseTable').DataTable(); // Initialize DataTable
                                 },
                                 error: function (error) {
                                     console.log("Error fetching data:", error);

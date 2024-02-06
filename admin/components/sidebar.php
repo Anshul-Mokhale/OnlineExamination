@@ -48,21 +48,20 @@
                 <i class="mdi mdi-pencil-box menu-icon"></i>
             </a>
         </li>
-        <!-- <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#home_quote" aria-expanded="false"
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#Result" aria-expanded="false"
                 aria-controls="home_quote">
-                <span class="menu-title">Home Section</span>
+                <span class="menu-title">Results</span>
                 <i class="menu-arrow"></i>
-                <i class="mdi mdi-format-quote-close menu-icon"></i>
+                <i class="mdi mdi-shield menu-icon"></i>
             </a>
-            <div class="collapse" id="home_quote">
+            <div class="collapse" id="Result">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="edit_home_banner.php">Edit Banner</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="manage_quote.php">Manage Quote</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="popupData.php">Manage Popup Data</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="edit_home_banner.php">Result By Exam</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="manage_quote.php">LeaderBoard</a></li>
                 </ul>
             </div>
-        </li> -->
+        </li>
 
     </ul>
 </nav>

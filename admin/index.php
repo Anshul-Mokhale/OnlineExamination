@@ -9,13 +9,9 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
 } else {
   $msg = "";
 }
-// $active_user = getResultAsArray("SELECT COUNT(`id`) as `cnt` FROM `admin` WHERE `status` = 1");
-// $query_cnt = getResultAsArray("SELECT COUNT(`id`) as `cnt` FROM `query`");
-// $connect_cnt = getResultAsArray("SELECT COUNT(`id`) as `cnt` FROM `home_query`");
-// $newsletter_cnt = getResultAsArray("SELECT COUNT(`id`) as `cnt` FROM `newsletter_registration`");
-// $testinomials_cnt = getResultAsArray("SELECT COUNT(`id`) as `cnt` FROM `testinomials`");
-// $appointment_cnt = getResultAsArray("SELECT COUNT(`id`) as `cnt` FROM `appointment_detail`");
-// $blog_cnt = getResultAsArray("SELECT COUNT(`id`) as `cnt` FROM `blogs`")
+$active_user = getResultAsArray("SELECT COUNT(`id`) as `cnt` FROM `students` WHERE `status` = 1");
+$Course = getResultAsArray("SELECT COUNT(`id`) as `cnt` FROM `course`");
+$exams = getResultAsArray("SELECT COUNT(`id`) as `cnt` FROM `exams`");
 ?>
 <div class="container-scroller">
   <?php include_once('components/navbar.php'); ?>
@@ -62,11 +58,14 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
             <div class="card bg-gradient-primary card-img-holder text-white">
               <div class="card-body index-card">
                 <img src="assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
-                <h5 class="font-weight-normal mb-1">Total Admin <i
+                <h5 class="font-weight-normal mb-1">Total Students <i
                     class="mdi mdi-account-multiple-outline mdi-24px float-right"></i>
                 </h5>
-                <h2 class="mb-1">0</h2>
-                <h6 class="card-text">Total Active Admin</h6>
+                <h2 class="mb-1">
+                  <?= $active_user[0]['cnt'] ?>
+
+                </h2>
+                <h6 class="card-text">Total Students</h6>
               </div>
             </div>
           </div>
@@ -74,13 +73,13 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
             <div class="card bg-gradient-primary card-img-holder text-white">
               <div class="card-body index-card">
                 <img src="assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
-                <h5 class="font-weight-normal mb-1">Total Appointments <i
+                <h5 class="font-weight-normal mb-1">Total Courses <i
                     class="mdi mdi-account-multiple-outline mdi-24px float-right"></i>
                 </h5>
                 <h2 class="mb-1">
-                  0
+                  <?= $Course[0]['cnt'] ?>
                 </h2>
-                <h6 class="card-text">Total Appointments</h6>
+                <h6 class="card-text">Total Course</h6>
               </div>
             </div>
           </div>
@@ -88,72 +87,17 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
             <div class="card bg-gradient-primary card-img-holder text-white">
               <div class="card-body index-card">
                 <img src="assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
-                <h5 class="font-weight-normal mb-1">Total Testinomials <i
+                <h5 class="font-weight-normal mb-1">Total Exams <i
                     class="mdi mdi-account-multiple-outline mdi-24px float-right"></i>
                 </h5>
                 <h2 class="mb-1">
-                  0
+                  <?= $exams[0]['cnt'] ?>
                 </h2>
-                <h6 class="card-text">Total Testinomials</h6>
+                <h6 class="card-text">Total Exams</h6>
               </div>
             </div>
           </div>
-          <div class="col-md-4 stretch-card grid-margin">
-            <div class="card bg-gradient-primary card-img-holder text-white">
-              <div class="card-body index-card">
-                <img src="assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
-                <h5 class="font-weight-normal mb-1">Total Query <i
-                    class="mdi mdi-account-multiple-outline mdi-24px float-right"></i>
-                </h5>
-                <h2 class="mb-1">
-                  0
-                </h2>
-                <h6 class="card-text">Total Query</h6>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 stretch-card grid-margin">
-            <div class="card bg-gradient-primary card-img-holder text-white">
-              <div class="card-body index-card">
-                <img src="assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
-                <h5 class="font-weight-normal mb-1">Total Newsletter <i
-                    class="mdi mdi-account-multiple-outline mdi-24px float-right"></i>
-                </h5>
-                <h2 class="mb-1">
-                  0
-                </h2>
-                <h6 class="card-text">Total Newsletter Registration</h6>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 stretch-card grid-margin">
-            <div class="card bg-gradient-primary card-img-holder text-white">
-              <div class="card-body index-card">
-                <img src="assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
-                <h5 class="font-weight-normal mb-1">Total User <i
-                    class="mdi mdi-account-multiple-outline mdi-24px float-right"></i>
-                </h5>
-                <h2 class="mb-1">
-                  0
-                </h2>
-                <h6 class="card-text">Total User Connected</h6>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 stretch-card grid-margin">
-            <div class="card bg-gradient-primary card-img-holder text-white">
-              <div class="card-body index-card">
-                <img src="assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
-                <h5 class="font-weight-normal mb-1">Total Blogs <i
-                    class="mdi mdi-account-multiple-outline mdi-24px float-right"></i>
-                </h5>
-                <h2 class="mb-1">
-                  0
-                </h2>
-                <h6 class="card-text">Total Blogs</h6>
-              </div>
-            </div>
-          </div>
+
         </div>
         <!-- <?php $otp = executeSelect('otp', array(), array(), 'date_added DESC LIMIT 3');
         if (count($otp) > 0) {

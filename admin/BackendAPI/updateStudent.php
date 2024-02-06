@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Check if the password is provided
         if (isset($data['password'])) {
-            $password = $data['password'];
+            $password = md5($data['password']);
             $updateSql = "UPDATE students SET name='$name', email='$email', phone='$phoneNumber', password='$password', gender='$gender', birth_date='$birthDate', address='$address', courses='$courses' WHERE id='$id'";
         } else {
             // If password is not provided, update without modifying the password

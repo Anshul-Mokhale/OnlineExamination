@@ -71,9 +71,9 @@ if ($error != "") {
     <div class="content-wrapper d-flex align-items-center auth">
       <div class="row flex-grow">
         <div class="col-lg-4 mx-auto">
-          <div class="auth-form-light text-left p-5">
+          <div class="auth-form-light text-left p-5" style="border-radius: 10px;">
             <div class="brand-logo">
-              <a href="index.php"><img src="assets/images/logo.svg"></a>
+              <a href="index.php"><img src="assets/images/IMAGELOGO.svg"></a>
             </div>
             <h4>Hello! let's get started</h4>
             <h6 class="font-weight-light">Sign in to continue.</h6>
@@ -92,13 +92,16 @@ if ($error != "") {
             ?>
             <form class="pt-3" method="post" action="<?= $_SERVER['PHP_SELF'] ?>">
               <div class="form-group" id="email">
-                <input type="email" name="email" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Email">
+                <input type="email" name="email" class="form-control form-control-lg" id="exampleInputEmail1"
+                  placeholder="Email">
               </div>
               <div class="form-group">
-                <input type="password" name="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Password">
+                <input type="password" name="password" class="form-control form-control-lg" id="exampleInputPassword1"
+                  placeholder="Password">
               </div>
               <div class="mt-3">
-                <input type="submit" class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn" name="login" value="SIGN IN" />
+                <input type="submit" class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn"
+                  name="login" value="SIGN IN" />
               </div>
               <div class="mt-2 d-flex justify-content-between">
                 <a href="forgot_password.php" class="auth-link text-black">Forgot password?</a>
