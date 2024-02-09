@@ -7,15 +7,17 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
     $msg = "<div class='alert alert-success alert-dismissible'>
           <strong>Login successfully!</strong>
         </div>";
-    if (isset($_GET['id'])) {
+    if (isset($_GET['id'], $_GET['sec'])) {
         $id = $_GET['id'];
+        $sec = $_GET['sec'];
     } else {
         header("location: exam.php");
     }
 } else {
     $msg = "";
-    if (isset($_GET['id'])) {
+    if (isset($_GET['id'], $_GET['sec'])) {
         $id = $_GET['id'];
+        $sec = $_GET['sec'];
     } else {
         // $id = "";
         header("location: exam.php");
@@ -24,6 +26,77 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
 
 ?>
 <style>
+    .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .pupup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        z-index: 1000;
+        width: 90%;
+        /* Adjusted width to be responsive */
+        max-width: 500px;
+        /* Added max-width to prevent overly wide popup */
+        opacity: 0;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        transform-origin: center;
+    }
+
+    .overlay.active,
+    .pupup.active {
+        display: block;
+        opacity: 1;
+    }
+
+    .pupup.active {
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    .table-responsive {
+        overflow-x: auto !important;
+    }
+
+    .selected-values {
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .selected-value {
+        margin: 5px;
+        padding: 5px 10px;
+        background-color: #007bff;
+        color: #fff;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+    }
+
+    .remove-icon {
+        margin-left: 5px;
+        cursor: pointer;
+    }
+
     .selected-values {
         margin-top: 10px;
         padding: 10px;
@@ -74,18 +147,22 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                         </div>
                     </div>
                 </section>
+
                 <div class="page-header">
                     <h3 class="page-title">
-                        <a href="exam.php" class="txt-primary" style="font-size: 30px !important;"><i
-                                class="mdi mdi-arrow-left"></i></a>
+                        <a href="viewQuestion.php?id=<?= $id ?>" class="txt-primary"
+                            style="font-size: 30px !important;"><i class="mdi mdi-arrow-left"></i></a>
                     </h3>
+
                     <nav aria-label="breadcrumb">
-                        <ul class="breadcrumb">
-                            <!-- <li class="breadcrumb-item active" aria-current="page">
-                                <a href="#" class="page-title-icon bg-gradient-primary text-white me-2 mark">Add Course
-                                    <i class="mdi mdi-library-plus"></i></a>
-                            </li> -->
-                        </ul>
+                        <!-- <ul class="breadcrumb">
+                            <li class="breadcrumb-item active" aria-current="page">
+                                <a href="#" class="page-title-icon bg-gradient-primary text-white me-2 mark"
+                                    id="addSectionBtn">Edit
+                                    Section
+                                    <i class="mdi mdi-pencil"></i></a>
+                            </li>
+                        </ul> -->
                     </nav>
                 </div>
                 <div class="row">

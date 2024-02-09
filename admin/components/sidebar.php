@@ -42,20 +42,26 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="exam.php">
-                <span class="menu-title">Exam</span>
-                <!-- <i class="menu-arrow"></i> -->
-                <i class="mdi mdi-pencil-box menu-icon"></i>
+            <a class="nav-link" data-bs-toggle="collapse" href="#examses" aria-expanded="false" aria-controls="examses">
+                <span class="menu-title">ExamS</span>
+                <i class="menu-arrow"></i>
+                <i class="mdi mdi-shield menu-icon"></i>
             </a>
+            <div class="collapse" id="examses">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="exam.php">Offical Exams</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="#">Demo Exams</a></li>
+                </ul>
+            </div>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#Result" aria-expanded="false"
-                aria-controls="home_quote">
+            <a class="nav-link" data-bs-toggle="collapse" href="#resultst" aria-expanded="false"
+                aria-controls="resultst">
                 <span class="menu-title">Results</span>
                 <i class="menu-arrow"></i>
                 <i class="mdi mdi-shield menu-icon"></i>
             </a>
-            <div class="collapse" id="Result">
+            <div class="collapse" id="resultst">
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item"> <a class="nav-link" href="edit_home_banner.php">Result By Exam</a></li>
                     <li class="nav-item"> <a class="nav-link" href="manage_quote.php">LeaderBoard</a></li>

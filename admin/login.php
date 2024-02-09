@@ -68,14 +68,19 @@ if ($error != "") {
 ?>
 <div class="container-scroller">
   <div class="container-fluid page-body-wrapper full-page-wrapper">
-    <div class="content-wrapper d-flex align-items-center auth">
-      <div class="row flex-grow">
+    <div class="content-wrapper d-flex align-items-center auth"
+      style="background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), url(assets/images/Ban/pexels-pixabay-289737.jpg); background-repeat: no-repeat; background-size:cover">
+      <div class="row flex-grow" style="align-items:center;">
+        <!-- <div class="col-lg-4 mx-auto">
+          <img src="assets/images/Ban/Exams-bro.svg" class="img-fluid" alt="">
+        </div> -->
         <div class="col-lg-4 mx-auto">
-          <div class="auth-form-light text-left p-5" style="border-radius: 10px;">
-            <div class="brand-logo">
+          <div class="auth-form-light text-center p-5"
+            style="border-radius: 10px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);">
+            <div class="brand-logo" style="display:flex; align-items:center; justify-content:center;">
               <a href="index.php"><img src="assets/images/IMAGELOGO.svg"></a>
             </div>
-            <h4>Hello! let's get started</h4>
+            <h4>Hello! Teacher</h4>
             <h6 class="font-weight-light">Sign in to continue.</h6>
             <?php
             if ($msg) {
@@ -103,9 +108,9 @@ if ($error != "") {
                 <input type="submit" class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn"
                   name="login" value="SIGN IN" />
               </div>
-              <div class="mt-2 d-flex justify-content-between">
+              <!-- <div class="mt-2 d-flex justify-content-between">
                 <a href="forgot_password.php" class="auth-link text-black">Forgot password?</a>
-              </div>
+              </div> -->
             </form>
           </div>
         </div>

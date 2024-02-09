@@ -1,34 +1,34 @@
 <?php
-// Include the database connection file
 include "../components/includes/connection.php";
 
-// Assuming you have a connection object named $conn
+// Set the default response content type to JSON
+header('Content-Type: application/json');
 
-// Query to fetch data from the "course" table
-$query = "SELECT * FROM course";
-$result = $mysql_connection->query($query);
+// Check if the request method is GET
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    // Check if 'id' parameter is present in the URL
+    if (isset($_GET['id'])) {
+        // Store the 'id' value in a variable
+        $id = $_GET['id'];
 
-// Check if the query was successful
-if ($result) {
-    // Check if any rows were returned
-    if ($result->num_rows > 0) {
-        // Fetch all rows as an associative array
-        while ($row = $result->fetch_assoc()) {
-            $rows[] = $row;
-        }
-        // Convert data to JSON format
-        $json_data = json_encode($rows);
 
-        // Output JSON data
-        echo $json_data;
+
+        // Simulating some response data
+        $responseData = array(
+            'id' => $id,
+            'message' => 'Data fetched successfully' // You can replace this with actual fetched data
+        );
+
+        // Sending the response in JSON format
+        echo json_encode($responseData);
     } else {
-        // If no rows were returned
-        echo json_encode(array('message' => 'No records found'));
+        // Handle if 'id' parameter is not present
+        $errorResponse = array('error' => 'ID parameter is missing.');
+        echo json_encode($errorResponse);
     }
 } else {
-    // If the query fails, handle the error (you may want to log or send an appropriate response)
-    echo json_encode(array('error' => 'Error executing query: ' . mysqli_error($mysql_connection)));
+    // Handle if request method is not GET
+    $errorResponse = array('error' => 'This endpoint only accepts GET requests.');
+    echo json_encode($errorResponse);
 }
-
-// Close the database connection after fetching data
-$mysql_connection->close();
+?>

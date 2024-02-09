@@ -16,7 +16,7 @@ if (!($curPageName == 'login.php' || $curPageName == 'forgot_password.php')) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Jrreddy - Astrology, Vaastu & Numerology</title>
+  <title>Sudarsansir Master Academy</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
@@ -38,7 +38,7 @@ if (!($curPageName == 'login.php' || $curPageName == 'forgot_password.php')) {
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <?php } ?>
   <link rel="stylesheet" href="assets/css/style.css?v=<?= time() ?>">
-  <link rel="shortcut icon" href="assets/images/favicon.ico" />
+  <link rel="shortcut icon" href="assets/images/lefere.svg" />
   <link rel="stylesheet" href="assets/css/dselect.css">
   <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

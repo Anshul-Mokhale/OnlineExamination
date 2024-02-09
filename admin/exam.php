@@ -110,7 +110,7 @@ if (!empty($_GET['msg']) && $_GET['msg'] === "login") {
                                             "<td>" + item['date_time'] + "</td>" +
                                             "<td>" + item['time_limit'] + "</td>" +
                                             "<td>" + item['number_of_questions'] + "</td>" +
-                                            "<td><a href='addQuestion.php?id=" + item['id'] + "' class='btn-gradient-success' style ='padding: 5px; text-decoration: none;'>Add Question</a> <a href='updateExam.php?id=" + item['id'] + "' class='btn-gradient-light' style ='padding: 5px; text-decoration: none;'>Update</a> <button class='btn btn-danger btn-sm deleteBtn' data-id='" + item['id'] + "'>Delete</button></td>"
+                                            "<td><a href='addSection.php?id=" + item['id'] + "' class='btn-gradient-success' style ='padding: 5px; text-decoration: none;'>Add Question</a> <a href='updateExam.php?id=" + item['id'] + "' class='btn-gradient-light' style ='padding: 5px; text-decoration: none;'>Update</a> <button class='btn btn-danger btn-sm deleteBtn' data-id='" + item['id'] + "'>Delete</button></td>"
                                         "</tr>";
                                         i++;
                                         tableBody.append(row);

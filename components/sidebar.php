@@ -36,7 +36,7 @@
             </a>
             <div class="collapse" id="Result">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="#">Live Exam</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="liveExam.php">Live Exam</a></li>
                     <li class="nav-item"> <a class="nav-link" href="#">Scheduled Exams</a></li>
                 </ul>
             </div>

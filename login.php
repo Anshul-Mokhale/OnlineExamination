@@ -69,18 +69,22 @@ if ($error != "") {
 <div class="container-scroller">
   <div class="container-fluid page-body-wrapper full-page-wrapper">
     <div class="content-wrapper d-flex align-items-center auth"
-      style="background-image: url(assets/images/Ban/pexels-pixabay-289737.jpg); background-size:cover;">
-
-      <div class="col-lg-4 mx-auto">
-        <div class="auth-form-light text-left p-5" style="border-radius: 10px;">
-          <div class="brand-logo">
-            <a href="index.php"><img src="assets/images/IMAGELOGO.svg"></a>
-          </div>
-          <h4>Hello! let's get started</h4>
-          <h6 class="font-weight-light">Sign in to continue.</h6>
-          <?php
-          if ($msg) {
-            echo "     
+      style="background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), url(assets/images/Ban/pexels-pixabay-289737.jpg); background-repeat: no-repeat; background-size:cover">
+      <div class="row flex-grow" style="align-items:center;">
+        <!-- <div class="col-lg-4 mx-auto">
+          <img src="assets/images/Ban/Exams-bro.svg" class="img-fluid" alt="">
+        </div> -->
+        <div class="col-lg-4 mx-auto">
+          <div class="auth-form-light text-center p-5"
+            style="border-radius: 10px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);">
+            <div class="brand-logo" style="display:flex; align-items:center; justify-content:center;">
+              <a href="index.php"><img src="assets/images/IMAGELOGO.svg"></a>
+            </div>
+            <h4>Hello! Student</h4>
+            <h6 class="font-weight-light">Sign in to continue.</h6>
+            <?php
+            if ($msg) {
+              echo "     
                 <section>                   
                   <div class='container-fluid'>
                     <div class='row'>
@@ -89,32 +93,32 @@ if ($error != "") {
                   </div>
                 </section>
                 ";
-          }
-          ?>
-          <form class="pt-3" method="post" action="<?= $_SERVER['PHP_SELF'] ?>">
-            <div class="form-group" id="email">
-              <input type="email" name="email" class="form-control form-control-lg" id="exampleInputEmail1"
-                placeholder="Email">
-            </div>
-            <div class="form-group">
-              <input type="password" name="password" class="form-control form-control-lg" id="exampleInputPassword1"
-                placeholder="Password">
-            </div>
-            <div class="mt-3">
-              <input type="submit" class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn"
-                name="login" value="SIGN IN" />
-            </div>
-            <!-- <div class="mt-2 d-flex justify-content-between">
+            }
+            ?>
+            <form class="pt-3" method="post" action="<?= $_SERVER['PHP_SELF'] ?>">
+              <div class="form-group" id="email">
+                <input type="email" name="email" class="form-control form-control-lg" id="exampleInputEmail1"
+                  placeholder="Email">
+              </div>
+              <div class="form-group">
+                <input type="password" name="password" class="form-control form-control-lg" id="exampleInputPassword1"
+                  placeholder="Password">
+              </div>
+              <div class="mt-3">
+                <input type="submit" class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn"
+                  name="login" value="SIGN IN" />
+              </div>
+              <!-- <div class="mt-2 d-flex justify-content-between">
                 <a href="forgot_password.php" class="auth-link text-black">Forgot password?</a>
               </div> -->
-          </form>
+            </form>
+          </div>
         </div>
       </div>
     </div>
+    <!-- content-wrapper ends -->
   </div>
-  <!-- content-wrapper ends -->
-</div>
-<!-- page-body-wrapper ends -->
+  <!-- page-body-wrapper ends -->
 </div>
 <!-- container-scroller -->
 <?php include_once('components/footer.php'); ?>
