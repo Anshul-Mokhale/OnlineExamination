@@ -188,7 +188,7 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                                                 echo "<tr>"; // Start a new row
                                                 echo "<td class='text-center'>" . $i . "</td>"; // Use <td> instead of <th> for table data
                                                 echo "<td class='text-center'>" . $row['name'] . "</td>";
-                                                echo "<td class='text-center'><a href='viewQuestion.php?id=$id&sec=" . $row['sr'] . "' class='page-title-icon bg-gradient-primary text-white me-2 mark' id='addSectionBtn'>Add Questions</a><a href='#' class='page-title-icon bg-danger text-white me-2 mark' id='addSectionBtn'>Delete</a></td>";
+                                                echo "<td class='text-center'><a href='viewQuestion.php?id=$id&sec=" . $row['sr'] . "' class='page-title-icon bg-gradient-primary text-white me-2 mark' id='addSectionBtn'>Add Questions</a><a href='BackendAPI/deleteSection.php?id=$id&sec=" . $row['sr'] . "' class='page-title-icon bg-danger text-white me-2 mark' id='addSectionBtn'>Delete</a></td>";
                                                 echo "</tr>"; // End the row
                                                 $i++;
                                             }

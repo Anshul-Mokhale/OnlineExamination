@@ -265,52 +265,66 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                 <div class="row">
                     <?php
                     $quest = "SELECT * FROM question_$id WHERE exam_id = '$id' AND section = '$sec'";
-                    $result = $mysql_connection->query($quest);
+                    try {
+                        $result = $mysql_connection->query($quest);
+                        $i = 1;
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                // Extract question details from the row
+                                $description = nl2br($row['description']);
+                                $question = $row['question'];
+                                $choices = json_decode($row['choices'], true);
+                                $correct_answer = $row['correct_answer'];
+                                $explanation = $row['explanation'];
 
-                    if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
-                            // Extract question details from the row
-                            $description = nl2br($row['description']);
-                            $question = $row['question'];
-                            $choices = json_decode($row['choices'], true);
-                            $correct_answer = $row['correct_answer'];
-                            $explanation = $row['explanation'];
-
-                            // Output question HTML
-                            ?>
-                            <div class="col-lg-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Description:<br>
-                                            <?php echo $description; ?>
-                                        </h5>
-                                        <p class="card-text">Question:
-                                            <?php echo $question; ?>
-                                        </p>
-                                        <p class="card-text">Choices:</p>
-                                        <ul>
-                                            <?php
-                                            foreach ($choices as $choice) {
-                                                echo "<li>$choice</li>";
-                                            }
-                                            ?>
-                                        </ul>
-                                        <p class="card-text">Correct Answer:
-                                            <?php echo $correct_answer; ?>
-                                        </p>
-                                        <p class="card-text">Explanation:
-                                            <?php echo $explanation; ?>
-                                        </p>
+                                // Output question HTML
+                                ?>
+                                <div class="col-lg-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h5 class="card-title">
+                                                    <?= $i ?>. Description:
+                                                </h5>
+                                                <button class="btn btn-danger btn-sm deleteBtn"
+                                                    data-id="<?= $row['id'] ?>">Delete</button>
+                                            </div>
+                                            <p class="card-text">
+                                                <?php echo $description; ?>
+                                            </p>
+                                            <p class="card-text"><strong>Question:</strong>
+                                                <?php echo $question; ?>
+                                            </p>
+                                            <p class="card-text"><strong>Choices:</strong></p>
+                                            <ul>
+                                                <?php
+                                                foreach ($choices as $choice) {
+                                                    echo "<li>$choice</li>";
+                                                }
+                                                ?>
+                                            </ul>
+                                            <p class="card-text"><strong>Answer:</strong>
+                                                <?php echo $correct_answer; ?>
+                                            </p>
+                                            <p class="card-text"><strong>Explanation:</strong>
+                                                <?php echo $explanation; ?>
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <?php
+                                <?php
+                                $i++;
+                            }
+                        } else {
+                            echo "<div class='col-lg-12'><p>No questions found.</p></div>";
                         }
-                    } else {
-                        echo "<p>No questions found.</p>";
+                    } catch (mysqli_sql_exception $e) {
+                        echo "<div class='col-lg-12'><p>Nothing found!</p></div>";
                     }
                     ?>
                 </div>
+
+
 
 
                 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -437,6 +451,39 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                                     console.error(xhr.responseText);
                                 }
                             });
+                        });
+                        $('.deleteBtn').click(function () {
+                            var examId = <?php echo $id; ?>; // Get the exam ID from PHP variable
+                            var questionId = $(this).data('id'); // Get the question ID from data attribute
+
+                            // Confirm deletion with the user
+                            var confirmDelete = confirm('Are you sure you want to delete this question?');
+
+                            // If user confirms deletion
+                            if (confirmDelete) {
+                                // Send AJAX request to delete question
+                                $.ajax({
+                                    url: 'BackendAPI/deleteQuestion.php', // Change to the actual path of your backend script
+                                    method: 'POST',
+                                    data: { examId: examId, questionId: questionId },
+                                    dataType: 'json',
+                                    success: function (response) {
+                                        // Check if deletion was successful
+                                        if (response.status === 'success') {
+                                            // Reload the page to reflect changes
+                                            location.reload();
+                                        } else {
+                                            // Show error message if deletion fails
+                                            alert('Failed to delete question.');
+                                        }
+                                    },
+                                    error: function (xhr, status, error) {
+                                        // Show error message if AJAX request fails
+                                        console.error(xhr.responseText);
+                                        alert('An error occurred while processing your request.');
+                                    }
+                                });
+                            }
                         });
                     });
 

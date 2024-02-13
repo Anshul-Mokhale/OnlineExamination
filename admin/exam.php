@@ -67,7 +67,7 @@ if (!empty($_GET['msg']) && $_GET['msg'] === "login") {
                             <div class="card">
                                 <div class="card-body table-responsive">
                                     <!-- <h4 class="card-title">Bordered table</h4> -->
-                                    <table class="table table-bordered " id="courseTable">
+                                    <table class="table" id="courseTable">
                                         <thead>
                                             <tr>
                                                 <th> Sr </th>
@@ -115,10 +115,15 @@ if (!empty($_GET['msg']) && $_GET['msg'] === "login") {
                                         i++;
                                         tableBody.append(row);
                                     });
+
+                                    // Bind click event to delete button
                                     $(".deleteBtn").on("click", function () {
                                         var studentId = $(this).data("id");
-                                        // Make an AJAX request to delete the course
-                                        deleteCourse(studentId);
+                                        // Show confirmation dialog
+                                        if (confirm("Are you sure you want to delete this exam?")) {
+                                            // If user confirms, make an AJAX request to delete the exam
+                                            deleteCourse(studentId);
+                                        }
                                     });
 
                                 } else {
@@ -127,13 +132,13 @@ if (!empty($_GET['msg']) && $_GET['msg'] === "login") {
                                 }
                             }
 
-                            // Make an AJAX request to fetch user data
+                            // Make an AJAX request to fetch exam data
                             $.ajax({
                                 type: "GET",
-                                url: "BackendAPI/getExam.php", // Replace with the actual path to your PHP file
+                                url: "BackendAPI/getExam.php",
                                 dataType: "json",
                                 success: function (data) {
-                                    // Populate the table with user details
+                                    // Populate the table with exam details
                                     populateTable(data);
                                 },
                                 error: function (error) {
@@ -141,11 +146,11 @@ if (!empty($_GET['msg']) && $_GET['msg'] === "login") {
                                 }
                             });
 
-                            function deleteCourse(studentId) {
+                            function deleteCourse(examId) {
                                 $.ajax({
                                     type: "POST",
-                                    url: "BackendAPI/deleteExam.php", // Replace with the actual path to your deleteCourse.php file
-                                    data: { id: studentId },
+                                    url: "BackendAPI/deleteExam.php",
+                                    data: { id: examId },
                                     success: function (response) {
                                         console.log(response);
                                         try {
@@ -162,8 +167,6 @@ if (!empty($_GET['msg']) && $_GET['msg'] === "login") {
 
                                             // Reset form and clear output after a delay
                                             setTimeout(function () {
-                                                // form.trigger('reset');
-                                                // out.html('');
                                                 location.reload();
                                             }, 2000);
 
@@ -172,7 +175,7 @@ if (!empty($_GET['msg']) && $_GET['msg'] === "login") {
                                         }
                                     },
                                     error: function (error) {
-                                        console.log("Error deleting course:", error);
+                                        console.log("Error deleting exam:", error);
                                     }
                                 });
                             }

@@ -43,9 +43,9 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#examses" aria-expanded="false" aria-controls="examses">
-                <span class="menu-title">ExamS</span>
+                <span class="menu-title">Exams</span>
                 <i class="menu-arrow"></i>
-                <i class="mdi mdi-shield menu-icon"></i>
+                <i class="mdi mdi-note-plus menu-icon"></i>
             </a>
             <div class="collapse" id="examses">
                 <ul class="nav flex-column sub-menu">

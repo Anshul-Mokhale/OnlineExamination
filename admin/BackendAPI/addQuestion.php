@@ -6,13 +6,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $data = json_decode(file_get_contents("php://input"), true);
 
     // Extract data from the JSON object
-    $examName = $data['examName'];
-    $section = $data['section'];
-    $description = $data['paragraph'];
-    $question = $data['question'];
-    $choices = json_encode($data['choices']); // Convert choices array to JSON string
-    $correctAnswer = $data['correctAnswer'];
-    $explanation = $data['explanation'];
+    // Extract data from the JSON object
+    $examName = mysqli_real_escape_string($mysql_connection, $data['examName']);
+    $section = mysqli_real_escape_string($mysql_connection, $data['section']);
+    $description = mysqli_real_escape_string($mysql_connection, $data['paragraph']);
+    $question = mysqli_real_escape_string($mysql_connection, $data['question']);
+    $choices = mysqli_real_escape_string($mysql_connection, json_encode($data['choices'])); // Convert choices array to JSON string
+    $correctAnswer = mysqli_real_escape_string($mysql_connection, $data['correctAnswer']);
+    $explanation = mysqli_real_escape_string($mysql_connection, $data['explanation']);
+
 
     // Check if the question table exists
     $checkTableQuery = "SHOW TABLES LIKE 'question_$examName'";
