@@ -9,7 +9,10 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
 } else {
   $msg = "";
 }
-$active_user = getResultAsArray("SELECT COUNT(`id`) as `cnt` FROM `students` WHERE `status` = 1");
+if ($_SESSION['status'] != 1) {
+  header("location: logout.php");
+}
+$active_user = getResultAsArray("SELECT COUNT(`id`) as `cnt` FROM `students` WHERE `status` = 2");
 $Course = getResultAsArray("SELECT COUNT(`id`) as `cnt` FROM `course`");
 $exams = getResultAsArray("SELECT COUNT(`id`) as `cnt` FROM `exams`");
 ?>

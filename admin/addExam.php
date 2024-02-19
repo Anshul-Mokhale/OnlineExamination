@@ -123,9 +123,15 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                                     </div>
 
                                     <div class="form-group" id="dateTimeGroup" style="display: none;">
-                                        <label for="exampleInputDateTime">Select Date Time</label>
+                                        <label for="exampleInputDateTime">Select Start Date Time</label>
                                         <input type="datetime-local" class="form-control" id="exampleInputDateTime"
                                             name="dateTime">
+                                    </div>
+
+                                    <div class="form-group" id="dateTimeGroup2" style="display: none;">
+                                        <label for="exampleInputDateTime2">Select End Date Time</label>
+                                        <input type="datetime-local" class="form-control" id="exampleInputDateTime2"
+                                            name="dateTime2">
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputTime">Time Limit(in minutes)</label>
@@ -137,6 +143,17 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                                         <input type="number" class="form-control" id="exampleInputQuestion"
                                             placeholder="Number of question">
                                     </div>
+                                    <div class="form-group">
+                                        <label for="pMark">Positive Marking</label>
+                                        <input type="text" class="form-control" id="pMark"
+                                            placeholder="Marks on Correct Answer">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="nMark">Negative Marking</label>
+                                        <input type="text" class="form-control" id="nMark"
+                                            placeholder="Marks on wrong answer">
+                                    </div>
+
 
                                     <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
                                     <button class="btn btn-light">Cancel</button>
@@ -156,8 +173,10 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
 
                             if (selectedMode === "Scheduled") {
                                 $("#dateTimeGroup").show();
+                                $("#dateTimeGroup2").show();
                             } else {
                                 $("#dateTimeGroup").hide();
+                                $("#dateTimeGroup2").hide();
                             }
                         });
 
@@ -170,12 +189,18 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                                 instructions: $("#exampleInstruction").val(),
                                 mode: $("#exampleSelectMode").val(),
                                 dateTime: $("#exampleInputDateTime").val(),
+                                dateTime2: $("#exampleInputDateTime2").val(),
                                 timeLimit: $("#exampleInputTime").val(),
-                                numberOfQuestions: $("#exampleInputQuestion").val()
+                                numberOfQuestions: $("#exampleInputQuestion").val(),
+                                pMark: $("#pMark").val(),
+                                nMark: $("#nMark").val(),
                             };
 
+                            console.log("Form Data:", formData);
+
+
                             for (var key in formData) {
-                                if (key !== "dateTime" && (formData[key] === null || formData[key] === "")) {
+                                if (key !== "dateTime" && key !== "dateTime2" && (formData[key] === null || formData[key] === "")) {
                                     alert("Please fill out all fields!");
                                     return;
                                 }

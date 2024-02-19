@@ -28,16 +28,30 @@
         </li>
 
         <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#Exam" aria-expanded="false" aria-controls="home_quote">
+                <span class="menu-title">Exam</span>
+                <i class="menu-arrow"></i>
+                <i class="mdi mdi-shield menu-icon"></i>
+            </a>
+            <div class="collapse" id="Exam">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="liveExam.php">Live Exam</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="scheduledExam.php">Scheduled Exams</a></li>
+                    <!-- <li class="nav-item"> <a class="nav-link" href="#">Practice Exams</a></li> -->
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#Result" aria-expanded="false"
                 aria-controls="home_quote">
-                <span class="menu-title">Exam</span>
+                <span class="menu-title">Results</span>
                 <i class="menu-arrow"></i>
                 <i class="mdi mdi-shield menu-icon"></i>
             </a>
             <div class="collapse" id="Result">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="liveExam.php">Live Exam</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="#">Scheduled Exams</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="Result.php">Result By Exam</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="leaderExam.php">LeaderBoard</a></li>
                 </ul>
             </div>
         </li>

@@ -10,8 +10,10 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
 } else {
   $msg = "";
 }
+if ($_SESSION['status'] != 2) {
+  header("location: logout.php");
+}
 // $active_user = getResultAsArray("SELECT COUNT(`id`) as `cnt` FROM `admin` WHERE `status` = 1");
-
 ?>
 
 <div class="container-scroller">

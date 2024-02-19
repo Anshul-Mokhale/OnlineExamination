@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     // Prepare and bind the SQL statement
                     $stmt = $mysql_connection->prepare("INSERT INTO students (name, email, phone, password, gender, birth_date, address, Simage, Ssign, courses, created_at, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?)");
-                    $status = 1; // Assuming status is an integer value
+                    $status = 2; // Assuming status is an integer value
                     $stmt->bind_param("ssssssssssi", $studentName, $email, $phoneNumber, $password, $gender, $birthDate, $address, $img1TargetPath, $img2TargetPath, $courses, $status);
 
 

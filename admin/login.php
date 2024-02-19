@@ -57,6 +57,7 @@ if ($error != "") {
       $_SESSION['name'] = $name_login;
       $_SESSION['email'] = $email_login;
       $_SESSION['password'] = $password_login;
+      $_SESSION['status'] = 1;
       header('location:index.php?msg=login');
     }
   } else if (isset($_POST['email'])) {

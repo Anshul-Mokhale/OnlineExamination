@@ -299,7 +299,10 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                                             <ul>
                                                 <?php
                                                 foreach ($choices as $choice) {
-                                                    echo "<li>$choice</li>";
+                                                    if ($choice !== "") {
+                                                        echo "<li>$choice</li>";
+                                                    }
+
                                                 }
                                                 ?>
                                             </ul>
@@ -439,7 +442,8 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                                 success: function (response) {
                                     // Handle the JSON response from backend.php
                                     if (response.status == "success") {
-                                        alert("Added Question!");
+                                        // alert("Added Question!");
+                                        location.reload();
                                         $('#myForm')[0].reset();
                                     }
                                     else {

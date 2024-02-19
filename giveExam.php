@@ -17,16 +17,7 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
-    body {
-        -webkit-user-select: none;
-        /* Safari */
-        -moz-user-select: none;
-        /* Firefox */
-        -ms-user-select: none;
-        /* IE 10+ */
-        user-select: none;
-        /* Standard syntax */
-    }
+
 
     .NavBar {
         padding: 0.5em;
@@ -63,6 +54,10 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
         margin-right: 20px;
     }
 
+    li {
+        margin-left: 20px;
+    }
+
     .shape {
         width: 80px;
         /* Adjust width as needed */
@@ -76,6 +71,10 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
         color: white;
         margin-right: 20px;
         /* Border style */
+    }
+
+    .BB {
+        list-style: lower-alpha;
     }
 
     .shape2 {
@@ -126,6 +125,10 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
         color: red;
         font-style: italic;
     }
+
+    .boold {
+        font-weight: bold;
+    }
 </style>
 
 <body>
@@ -135,10 +138,11 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
     <div class="row" style="height: 88vh; margin-top:10px;text-align:justify;">
         <div class="col-9" style="border-right: 2px solid #959595;">
             <div class="box">
-                <h5>Please Read the following instructions carefully</h5>
+                <h3 style="text-align:center;">Please Read the following instructions carefully</h3>
 
-                <h6>General instructions:</h6>
                 <ol>
+                    <h6 style="text-decoration:underline;">General instructions:</h6>
+
                     <li>total of 30 minutes duration will be given to attempt all the questions</li>
                     <li>The clock has been set at the server and the countdown time at the top right of your screen will
                         display the time remaining for you to complete the exam. When the clock runs out the exam ends
@@ -146,27 +150,14 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                     <li>The question pallet at the right of the screen shows the following status of each questions:
                         <ul class="tt">
                             <li>
-                                <span class="shape0">0</span> You have not visited this question.
+                                <span class="shape0">0</span> You have not visited/ not answered this question.
                                 <!-- <div class="bex">0</div> -->
                             </li>
                             <li>
                                 <span class="shape">0</span> You have answered this question.
                                 <!-- <div class="bex">0</div> -->
                             </li>
-                            <li>
-                                <span class="shape2">0</span> You have not answered this question.
-                                <!-- <div class="bex">0</div> -->
-                            </li>
-                            <li>
-                                <span class="shape3">0</span> You have not answered this question but marked the
-                                question for review.
-                                <!-- <div class="bex">0</div> -->
-                            </li>
-                            <li>
-                                <span class="shape4">0</span> You have answered this question but marked the
-                                question for review.
-                                <!-- <div class="bex">0</div> -->
-                            </li>
+
                             <li>
                                 The marked for review status simply act as a reminder that you have set to look the
                                 question again. <span class="redcolor">if answered is selected for questions that is
@@ -175,7 +166,56 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                             </li>
                         </ul>
                     </li>
+                    <h6 style="text-decoration:underline;">Navigate To a Question:</h6>
+                    <li>To select a question to answer, you can do one of the following:
+                        <ol class="BB">
+                            <li>click on the question number on the question palette at the right of your screen to go
+                                to that numbered question directly. Note that using this option does NOT save your
+                                answer to the current question.</li>
+                            <li>Click on Save and next to save answer to current question and to go to the next question
+                                in sequence.</li>
+                        </ol>
+                    </li>
+                    <li>You can view the entire paper by clicking on the <span class="boold">Question Paper</span>
+                        button.</li>
+                    <h6 style="text-decoration:underline;">Answering Questions:</h6>
+                    <li>For multiple choice type question:
+                        <ol class="BB">
+                            <li>To select your answer, click on one of the option buttons.</li>
+                            <li>To change you answer, click on the another desired option button.</li>
+                            <li>To save your answer, you MUST click on <span class="boold">Save & Next<span>.</li>
+                            <li>To deselect a chosen answer, click on the chosen option again or click on the <span
+                                    class="boold">Clear Response</span> button.</li>
+                        </ol>
+                    </li>
+                    <li>For a numerical answer type question.
+                        <ol class="BB">
+                            <li>To enter a number as your answer, use the virtual numerical keypad</li>
+                            <li>A fraction(eg 0.3 or -0.3) can be entered as an answer ONLY with '0' befor the decimal
+                                point</li>
+                            <li>To save your answer, click on the <span class="boold">Save & Next</span></li>
+                            <li>To clear your answer, click on the <span class="boold">Clear Response</span> button</li>
+                        </ol>
+                    </li>
+                    <li>To change an answer to a question, first select the question and then click on the new answer
+                        option followed by a click on the <span class="boold">Save & Next</span> button.</li>
+                    <li>Questions that are saved or marked for review after answering will ONLY be considered for
+                        evaluation.</li>
+                    <h6 style="text-decoration:underline;">Navigate Through Sections:</h6>
+
+                    <li>Section in this question paper are displayed on the top bar of the screen, Question in a
+                        section can be viewed by clicking on the section name. The section you are currently viewing
+                        is highlighted.</li>
+                    <li>After clicking the <span class="boold">Save & Next</span> button on the last question for a
+                        section, you will automatically be taken to the first question of the next section.</li>
+                    <li>You can move the mouse cursor over the section names to view the status of the questions for
+                        the status of the questions for that section.</li>
+                    <li>You can shuffle between sections and questions anytime during the examination as per your
+                        convnience.</li>
+
                 </ol>
+
+
             </div>
 
             <script>
@@ -185,9 +225,10 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                     newWindow.focus();
                 }
             </script>
-            <!-- <a href="#" class="d-block text-center" style="text-decoration:none;"
-                onclick="openRestrictedWindow('exam.php?id=1')">Open Restricted Window</a> -->
-            <a href="exam.php?id=10" class="d-block text-center">Next</a>
+
+            <a class="d-block text-center" style="cursor:pointer;text-decoration:none;"
+                onclick="openRestrictedWindow('exam.php?id=<?= $_GET['id'] ?>&examId=<?= $_GET['examId'] ?>')">Next>></a>
+            <!-- <a href="exam.php?id=<?= $_GET['id'] ?>&examId=<?= $_GET['examId'] ?>" class="d-block text-center">Next</a> -->
         </div>
         <div class="col-3 user">
             <img src="admin/uploads/65c2361510ef6/Screenshot (2).png" alt="">

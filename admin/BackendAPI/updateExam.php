@@ -7,42 +7,54 @@ header('Content-Type: application/json');
 $response = array();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['data'])) {
-        $data = json_decode($_POST['data'], true);
+    // Get form data directly from $_POST
+    $id = $_POST['id'];
+    $course = $_POST['course'];
+    $examName = $_POST['examName'];
+    $inst = $_POST['instructions'];
+    $mode = $_POST['mode'];
+    if (isset($_POST['dateTime'], $_POST['dateTime2'])) {
+        $dateTime1 = $_POST['dateTime'];
+        $dateTime2 = $_POST['dateTime2'];
+    }
+    $dateTime11 = "0000-00-00 00:00:00";
+    $dateTime22 = "0000-00-00 00:00:00";
 
-        // Extracting form data
-        $id = $data['id'];
-        $name = $data['name'];
-        $email = $data['email'];
-        $phoneNumber = $data['phoneNumber'];
-        $gender = $data['gender'];
-        $courses = json_encode($data['courses']);
-        $birthDate = $data['birthDate'];
-        $address = $data['address'];
 
-        // Check if the password is provided
-        if (isset($data['password'])) {
-            $password = $data['password'];
-            $updateSql = "UPDATE students SET name='$name', email='$email', phone='$phoneNumber', password='$password', gender='$gender', birth_date='$birthDate', address='$address', courses='$courses' WHERE id='$id'";
-        } else {
-            // If password is not provided, update without modifying the password
-            $updateSql = "UPDATE students SET name='$name', email='$email', phone='$phoneNumber', gender='$gender', birth_date='$birthDate', address='$address', courses='$courses' WHERE id='$id'";
-        }
 
-        if ($mysql_connection->query($updateSql) === TRUE) {
+    $time = $_POST['timeLimit'];
+    $noq = $_POST['numberOfQuestions'];
+    $pmark = $_POST['pMark'];
+    $nmark = $_POST['nMark'];
+
+    // Update the database based on the mode
+    if ($mode == 'Live') {
+        $sql1 = "UPDATE `exams` SET `course_name` = '$course' , `exam_name` = '$examName' , `instructions` = '$inst', `mode` = '$mode',`date_time`='$dateTime11', `date_time2` = '$dateTime22', `time_limit` = '$time', `number_of_questions` = '$noq', `posititve` = '$pmark' , `negaitve` = '$nmark' WHERE `exams`.`id` = '$id'";
+        $res = $mysql_connection->query($sql1);
+        if ($res == true) {
             $response['status'] = "success";
-            $response['message'] = "Student data updated successfully!";
+            $response['message'] = "Exam updated successfully";
         } else {
-            $response['status'] = "error";
-            $response['message'] = "Error updating student data: " . $mysql_connection->error;
+            $response['status'] = "Failed";
+            $response['message'] = "Error updating exam in Live mode";
+        }
+    } else if ($mode == 'Scheduled') {
+        $sql1 = "UPDATE `exams` SET `course_name` = '$course' , `exam_name` = '$examName' , `instructions` = '$inst', `mode` = '$mode',`date_time`='$dateTime1', `date_time2` = '$dateTime2', `time_limit` = '$time', `number_of_questions` = '$noq', `posititve` = '$pmark' , `negaitve` = '$nmark' WHERE `exams`.`id` = '$id'";
+        $res = $mysql_connection->query($sql1);
+        if ($res == true) {
+            $response['status'] = "success";
+            $response['message'] = "Exam updated successfully";
+        } else {
+            $response['status'] = "Failed";
+            $response['message'] = "Error updating exam in Scheduled mode";
         }
     } else {
-        $response['status'] = "error";
-        $response['message'] = "Data key not found in the POST request.";
+        $response['status'] = "Failed";
+        $response['message'] = "Invalid mode";
     }
 } else {
-    $response['status'] = "error";
-    $response['message'] = "Invalid request method";
+    $response['status'] = "Failed";
+    $response['message'] = "No Data Found";
 }
 
 // Encode the response as JSON and output

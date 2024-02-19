@@ -5,13 +5,16 @@ include_once('components/header.php');
 $msg = '';
 if (isset($_GET['ab'])) {
     $msg = $_GET['ab'];
+    $studId = $_GET['id'];
+    $examId = $_GET['examId'];
+
 } else {
     $msg = "";
 }
+$sid = htmlspecialchars($_GET['id']);
+$vauesd = htmlspecialchars($_GET['examId']);
+// echo $vauesd;
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -27,21 +30,23 @@ if (isset($_GET['ab'])) {
             <i class="mdi mdi-fullscreen" id="fullscreen-button"></i>
         </a>
     </nav>
+
+
     <div class="row" style="height: 88vh; text-align:justify;">
         <div class="col-9">
             <div class="navi">
                 <li class="first">
                     <p>Section</p>
-                    <h6>Time Limit:</h6>
+                    <h6 id="timer">Time Limit:</h6>
                 </li>
                 <li class="first" style="border-top:1px solid black; border-bottom:1px solid black;">
                     <div class="acr">
-                        <a href="#"><i class="fa-solid fa-caret-left"></i></a>
+                        <a href="#" id="prev-section-button"><i class="fa-solid fa-caret-left"></i></a>
                         <h6 id="section" style="padding:5px; background-color: #4973bd; color:white; margin:0;">
                         </h6>
                     </div>
                     <div class="last">
-                        <a href="#"><i class="fa-solid fa-caret-right"></i></a>
+                        <a href="#" id="next-section-button"><i class="fa-solid fa-caret-right"></i></a>
                     </div>
                 </li>
                 <li class="first">
@@ -61,7 +66,7 @@ if (isset($_GET['ab'])) {
             </div>
             <div class="botom">
                 <div class="lefto">
-                    <button>Mark as Review & next</button>
+                    <!-- <button>Mark as Review & next</button> -->
                     <button>Clear response</button>
                 </div>
                 <div class="rightto">
@@ -80,26 +85,64 @@ if (isset($_GET['ab'])) {
                 </div>
             </div>
             <div id="sidebar" class="pp"></div>
-
+            <a href="#" class="submitBtn" id="subBtn">Submit Test</a>
         </div>
     </div>
 
     <script>
-
+        <?php
+        $vd = "SELECT time_limit FROM exams WHERE id = '$vauesd'";
+        $re = $mysql_connection->query($vd);
+        if ($re->num_rows > 0) {
+            $res = $re->fetch_assoc();
+        }
+        $tim = $res['time_limit'];
+        ?>
 
         document.addEventListener('DOMContentLoaded', function () {
+            var timeLimit = 60 * <?= $tim ?>; // 60 minutes
+
+            // Function to update the timer
+            // Function to update the timer
+            function updateTimer() {
+                var minutes = Math.floor(timeLimit / 60);
+                var seconds = timeLimit % 60;
+                var timerDisplay = document.getElementById('timer');
+                console.log("Timer Display Element:", timerDisplay); // Debugging
+                if (timerDisplay) {
+                    timerDisplay.textContent = 'Time Left: ' + (minutes < 10 ? '0' : '') + minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+                } else {
+                    console.error("Timer display element not found."); // Debugging
+                }
+
+                // Decrement timeLimit every second
+                if (timeLimit > 0) {
+                    timeLimit--;
+                    setTimeout(updateTimer, 1000); // Update every second
+                } else {
+                    // When time runs out, submit the answers
+                    submitAnswers2();
+                }
+            }
+
+
+            updateTimer();
             var fullscreenButton = document.getElementById('fullscreen-button');
             var sectionContainer = document.getElementById('sections-container');
             var saveAndNextButton = document.getElementById('nexxt');
             var secHead = document.getElementById('section');
             var showNum = document.getElementById('qno');
-            var sections;
+            var sbmt = document.getElementById('subBtn');
+            var sections = [];
+            var exam = <?= $vauesd ?>;
+            var sid = <?= $sid ?>;
 
+            // console.log(JSON.stringify({ examId: exam }));
             function fetchSectionsData() {
                 var url = 'BackendAPI/getQuesti.php'; // Modify the URL with your endpoint
                 var params = {
                     method: 'POST',
-                    body: JSON.stringify({ examId: 10 })
+                    body: JSON.stringify({ examId: exam })
                 };
 
                 fetch(url, params)
@@ -114,7 +157,7 @@ if (isset($_GET['ab'])) {
 
                         // Assign fetched sections data to the sections variable
                         sections = data;
-
+                        console.log(sections);
                         // Show the first section and its first question when the data is fetched
                         showCurrentSection();
                         updateSidebar(currentSectionIndex);
@@ -129,7 +172,7 @@ if (isset($_GET['ab'])) {
 
             var currentSectionIndex = 0;
             var currentQuestionIndex = 0;
-            var answers = []; // Array to store user answers
+            var answers = {}; // Object to store user answers
 
             // Function to show the current section and its questions
             function showCurrentSection() {
@@ -176,7 +219,7 @@ if (isset($_GET['ab'])) {
                         choiceInput.setAttribute('id', 'choice' + index);
 
                         // Check if the choice is the previously selected one
-                        if (answers[currentSectionIndex] && answers[currentSectionIndex][currentQuestionIndex] === choice) {
+                        if (answers[currentSection.name] && answers[currentSection.name][currentQuestion.question] === choice) {
                             choiceInput.setAttribute('checked', 'checked');
                         }
 
@@ -205,53 +248,126 @@ if (isset($_GET['ab'])) {
                 var selectedChoice = document.querySelector('input[name="choice"]:checked');
                 var answer = selectedChoice ? selectedChoice.value : '';
 
-                // Store the answer for the current question in the answers array
-                answers[currentSectionIndex] = answers[currentSectionIndex] || [];
-                answers[currentSectionIndex][currentQuestionIndex] = answer;
+                // Get the current section and question
+                var currentSection = sections[currentSectionIndex];
+                var currentQuestion = currentSection.questions[currentQuestionIndex];
+
+                // Check if the section exists in answers, if not create it
+                if (!answers[currentSection.name]) {
+                    answers[currentSection.name] = {};
+                }
+
+                // Store the answer for the current question in the answers object
+                answers[currentSection.name][currentQuestion.question] = answer;
             }
 
-            // Event listener for the "Save and Next" button
-            saveAndNextButton.addEventListener('click', function () {
-                saveAnswer(); // Save the answer before moving to the next question
+            var prevSectionButton = document.getElementById('prev-section-button');
+            prevSectionButton.addEventListener('click', function () {
+                // Decrement currentSectionIndex to move to the previous section
+                if (currentSectionIndex > 0) {
+                    currentSectionIndex--;
+                    // Show the current section
+                    if (confirm("Are you sure you want to Change the section?")) {
+                        showCurrentSection();
+                    }
+                } else {
+                    // Display alert if already on the first section
+                    alert("You are already on the first section.");
+                }
+            });
 
-                // Move to the next question or section if reached the end
+            // Event listener for the "Next Section" button
+            var nextSectionButton = document.getElementById('next-section-button');
+            nextSectionButton.addEventListener('click', function () {
+                // Increment currentSectionIndex to move to the next section
+                if (currentSectionIndex < sections.length - 1) {
+                    currentSectionIndex++;
+                    // Show the current section
+                    if (confirm("Are you sure you want to Change the section?")) {
+                        showCurrentSection();
+                    }
+                } else {
+                    // Display alert if already on the last section
+                    alert("You are already on the last section.");
+                }
+            });
+            // Event listener for the "Save and Next" button
+            let confirmedSectionChange = false; // Add this variable to track confirmation
+
+            saveAndNextButton.addEventListener('click', function () {
+                // Save the answer before moving to the next question
+                saveAnswer();
+
+                // Check if it's the last question in the current section
                 if (currentQuestionIndex < sections[currentSectionIndex].questions.length - 1) {
+                    // Move to the next question
                     currentQuestionIndex++;
+                    // Show the next question
+                    showCurrentSection();
                 } else {
                     // Check if it's the last section and last question
                     if (currentSectionIndex === sections.length - 1 && currentQuestionIndex === sections[currentSectionIndex].questions.length - 1) {
-                        // Change the button name to "Submit"
-                        saveAndNextButton.textContent = "Submit";
                         // Handle submission via AJAX
-                        submitAnswers();
-                        return;
+                        // submitAnswers();
+                        sbmt.style.display = "block";
+                        sbmt.onclick = submitAnswers;
+
                     } else {
-                        // Check if the section is changing
+                        // Check if the user has confirmed the section change
+                        if (!confirmedSectionChange) {
+                            // If not confirmed, prompt for confirmation
+                            if (confirm("Do you want to proceed to the next section?")) {
+                                // If confirmed, set the variable to true
+                                confirmedSectionChange = true;
+                            } else {
+                                // If not confirmed, return without proceeding
+                                return;
+                            }
+                        }
+
+                        // Reset the confirmedSectionChange flag for the next section
+                        confirmedSectionChange = false;
+
+                        // Move to the next section
                         var previousSectionIndex = currentSectionIndex;
                         currentQuestionIndex = 0;
                         currentSectionIndex++;
-                        if (currentSectionIndex >= sections.length) {
-                            // Submit the form or handle end of questions
-                            console.log("End of questions");
-                            return;
-                        }
 
-                        // Show the next question or move to the next section
-                        showCurrentSection();
-
-                        // If section changed, show alert
+                        // If section changed, show confirmation
                         if (previousSectionIndex !== currentSectionIndex) {
-                            alert("Section has changed!");
+                            // Show the next section
+                            showCurrentSection();
                         }
-
-                        return;
                     }
                 }
-
-                // Show the next question or move to the next section
-                showCurrentSection();
             });
 
+
+            var clearResponseButton = document.querySelector('.lefto button');
+            clearResponseButton.addEventListener('click', function () {
+                // Find the selected choice and reset it
+                var selectedChoice = document.querySelector('input[name="choice"]:checked');
+                if (selectedChoice) {
+                    selectedChoice.checked = false;
+                }
+                // Clear the answer from the answers object
+                answers[sections[currentSectionIndex].name][sections[currentSectionIndex].questions[currentQuestionIndex].question] = '';
+            });
+
+            // Show the next question or move to the next section
+            showCurrentSection();
+            var markReviewButton = document.querySelector('.lefto button:nth-child(1)');
+
+            markReviewButton.addEventListener('click', function () {
+                // Add the 'shape3' class to the corresponding sidebar button
+                var sidebarButton = document.querySelector('.question-button.' + currentSectionIndex + '_' + currentQuestionIndex);
+                if (sidebarButton) {
+                    sidebarButton.classList.remove('shape');
+                    sidebarButton.classList.remove('shape0');
+                    sidebarButton.classList.remove('shape2'); // Remove other classes
+                    sidebarButton.classList.add('shape3'); // Add shape3 class
+                }
+            });
 
             function updateSidebar(sectionIndex) {
                 var sidebar = document.getElementById('sidebar');
@@ -264,7 +380,7 @@ if (isset($_GET['ab'])) {
                     questionButton.classList.add(sectionIndex + '_' + index);
 
                     // Check if the question has been answered
-                    if (answers[sectionIndex] && answers[sectionIndex][index]) {
+                    if (answers[sections[sectionIndex].name] && answers[sections[sectionIndex].name][question.question]) {
                         questionButton.classList.add('shape');
                     } else {
                         questionButton.classList.add('shape0');
@@ -286,7 +402,7 @@ if (isset($_GET['ab'])) {
                 if (currentSectionIndex !== sectionIndex) {
                     var previousSectionQuestions = sections[currentSectionIndex].questions;
                     previousSectionQuestions.forEach(function (question, index) {
-                        var button = document.querySelector('.' + currentSectionIndex + '_' + index);
+                        var button = document.querySelector('.question-button.' + currentSectionIndex + '_' + index);
                         if (button) {
                             // Remove both shape and shape0 classes
                             button.classList.remove('shape');
@@ -297,27 +413,6 @@ if (isset($_GET['ab'])) {
 
                 // Update current section index
                 currentSectionIndex = sectionIndex;
-            }
-
-
-            function submitAnswers() {
-                // Perform AJAX request to submit answers
-                console.log(answers);
-                // var xhr = new XMLHttpRequest();
-                // xhr.open("POST", "new.php", true);
-                // xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                // xhr.onreadystatechange = function () {
-                //     if (xhr.readyState === XMLHttpRequest.DONE) {
-                //         if (xhr.status === 200) {
-                //             // Handle successful submission
-                //             console.log("Answers submitted successfully");
-                //         } else {
-                //             // Handle error
-                //             console.error("Error submitting answers:", xhr.status);
-                //         }
-                //     }
-                // };
-                // xhr.send(JSON.stringify(answers));
             }
 
             // Fullscreen functionality
@@ -352,7 +447,85 @@ if (isset($_GET['ab'])) {
                     document.msExitFullscreen();
                 }
             }
+
+            function submitAnswers() {
+                const examId = exam; // Example exam_id value, replace with your actual exam_id
+                const studentId = sid;
+
+                // Construct the data object to be sent in the request body
+                const postData = {
+                    studentId: studentId,
+                    examId: examId,
+                    answers: answers
+                };
+
+                // Ask for confirmation before submitting
+                if (confirm("Are you sure you want to submit your answers?")) {
+                    // Perform AJAX request to submit answers
+                    fetch('val.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(postData)
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            // Redirect or handle response as needed
+                            return response.text(); // This will return the response body as text
+                        })
+                        .then(data => {
+                            // alert(data); // Display the response message
+                            // Redirect to new.php or handle response as needed
+                            console.log(data);
+                            // window.location.href = 'thanYou.php'; // Uncomment this line if you want to redirect
+                        })
+                        .catch(error => {
+                            console.error('Error submitting answers:', error.message);
+                        });
+                }
+            }
+            function submitAnswers2() {
+                const examId = exam; // Example exam_id value, replace with your actual exam_id
+                const studentId = sid;
+
+                // Construct the data object to be sent in the request body
+                const postData = {
+                    studentId: studentId,
+                    examId: examId,
+                    answers: answers // Assuming answers is defined somewhere
+                };
+
+                // Perform AJAX request to submit answers
+                fetch('val.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(postData)
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        alert(response);
+                        // Redirect to thanYou.php or handle response as needed
+                        window.location.href = 'thanYou.php'; // Uncomment this line if you want to redirect
+                    })
+                    .catch(error => {
+                        console.error('Error submitting answers:', error.message);
+                    });
+            }
+
+
+            // Start the timer when the page loads
+            // window.onload = function () {
+            //     updateTimer();
+            // };
         });
+
     </script>
 
     <script src="https://kit.fontawesome.com/ca0110489d.js" crossorigin="anonymous"></script>

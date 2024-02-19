@@ -22,14 +22,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $instructions = mysqli_real_escape_string($mysql_connection, $data['instructions']);
         $mode = mysqli_real_escape_string($mysql_connection, $data['mode']);
         $dateTime = mysqli_real_escape_string($mysql_connection, $data['dateTime']);
+        $dateTime2 = mysqli_real_escape_string($mysql_connection, $data['dateTime2']);
         $timeLimit = mysqli_real_escape_string($mysql_connection, $data['timeLimit']);
-        $numberOfQuestions = mysqli_real_escape_string($mysql_connection, $data['numberOfQuestions']);
 
+        $numberOfQuestions = mysqli_real_escape_string($mysql_connection, $data['numberOfQuestions']);
+        $pMark = mysqli_real_escape_string($mysql_connection, $data['pMark']);
+        $nMark = mysqli_real_escape_string($mysql_connection, $data['nMark']);
         // Perform validation if needed
 
         // Save data to the database
-        $insertSql = "INSERT INTO exams (course_name, exam_name, instructions, mode, date_time, time_limit, number_of_questions)
-                      VALUES ('$course', '$examName', '$instructions', '$mode', '$dateTime', '$timeLimit', '$numberOfQuestions')";
+        $insertSql = "INSERT INTO exams (course_name, exam_name, instructions, mode, date_time,date_time2, time_limit, number_of_questions,posititve,negaitve)
+                      VALUES ('$course', '$examName', '$instructions', '$mode', '$dateTime','$dateTime2', '$timeLimit', '$numberOfQuestions',$pMark,$nMark)";
 
         if ($mysql_connection->query($insertSql) === TRUE) {
             $response['status'] = "success";

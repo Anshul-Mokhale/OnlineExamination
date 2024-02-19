@@ -39,7 +39,7 @@ if ($error != "") {
           </div>";
 } else if (!empty($_POST['login']) && $error == "") {
   if (isset($_POST['email'])) {
-    $admin = executeSelectSingle('students', array(), array('email' => $_POST['email'], 'status' => 1));
+    $admin = executeSelectSingle('students', array(), array('email' => $_POST['email'], 'status' => 2));
   }
   if (count($admin) > 0) {
     $id_login = $admin['id'];
@@ -57,6 +57,7 @@ if ($error != "") {
       $_SESSION['name'] = $name_login;
       $_SESSION['email'] = $email_login;
       $_SESSION['password'] = $password_login;
+      $_SESSION['status'] = 2;
       header('location:index.php?msg=login');
     }
   } else if (isset($_POST['email'])) {

@@ -68,7 +68,6 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                     </nav>
                 </div>
                 <?php
-                // Assuming $_SESSION['course'] contains a JSON string representation of the array like '["1","7"]'
                 $coursesJson = $_SESSION['course'];
 
                 // Convert the JSON string to an array
@@ -96,29 +95,40 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                             while ($row = $result->fetch_assoc()) {
                                 $cname = $row['Name'];
                                 echo '<div class="row">
-                                        <h1>' . $cname . '</h1>';
+                            <h1>' . $cname . '</h1>';
                                 $sql1 = "SELECT * FROM exams WHERE course_name = '$cname'";
                                 $result2 = $mysql_connection->query($sql1);
-                                while ($rows = $result2->fetch_assoc()) {
-                                    echo "<div class='col-md-4'>
+                                if ($result2 && $result2->num_rows > 0) {
+                                    while ($rows = $result2->fetch_assoc()) {
+                                        if ($rows['mode'] == "Live") {
+                                            echo "<div class='col-md-4'>
                                     <div class='card'>
                                         <div class='card-body'>
                                             <h1 class='card-title'>" . $rows['exam_name'] . "</h1>
                                             <h6 class='card-subtitle mb-2 text-body-secondary'>Exam Time Limit:" . $rows['time_limit'] . "</h6>
-                                            <h6 class='card-subtitle mb-2 text-body-secondary'>Number of Questions:" . $rows['number_of_questions'] . "</h6>
-                                            <a href='#' class='btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn'>Take Test</a>
-                                        </div>
+                                            <h6 class='card-subtitle mb-2 text-body-secondary'>Number of Questions:" . $rows['number_of_questions'] . "</h6>";
+                                            $si = $_SESSION['id'];
+                                            $ei = $rows['id'];
+                                            $getSub = "SELECT * FROM submissions WHERE student_id = '$si' AND exam_id = '$ei'";
+                                            $reu = $mysql_connection->query($getSub);
+                                            if ($reu->num_rows > 0) {
+                                                echo "<a onclick=\"alert('You have already given the exam')\" class='btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn'>Take Test</a>";
+                                            } else {
+                                                echo "<a href='giveExam.php?id=" . $_SESSION['id'] . "&examId=" . $rows['id'] . "' class='btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn' id='Give'>Take Test</a>";
+                                            }
+
+                                            echo "</div>
                                     </div>
-                                    </div>";
+                                </div>";
+                                        } else {
+                                            echo "Nothing found";
+                                        }
+                                    }
+                                } else {
+                                    echo "Nothing found";
                                 }
                                 echo '</div>';
-
                             }
-
-                            // // Add fetched course details to the $courseDetails array
-                            // if ($row) {
-                            //     $courseDetails[] = $row;
-                            // }
                         } else {
                             // Handle query error
                             echo "Error executing query: " . $mysql_connection->error;
@@ -128,81 +138,8 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                     // Handle invalid input in $_SESSION['course']
                     echo "Invalid input for course data.";
                 }
-
-
                 ?>
 
-
-                <!-- <div class="row">
-                    <h1>COurse Name</h1>
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Exam Nmae</h5>
-                                <h6 class="card-subtitle mb-2 text-body-secondary">Exam Time Limit</h6>
-                                <p class="card-text">Some quick example text to build on the card title and make up the
-                                    bulk of the card's content.</p>
-                                <a href="#" class="card-link">Take Test</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Exam Nmae</h5>
-                                <h6 class="card-subtitle mb-2 text-body-secondary">Exam Time Limit</h6>
-                                <p class="card-text">Some quick example text to build on the card title and make up the
-                                    bulk of the card's content.</p>
-                                <a href="#" class="card-link">Take Test</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <h1>COurse Name</h1>
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Exam Nmae</h5>
-                                <h6 class="card-subtitle mb-2 text-body-secondary">Exam Time Limit</h6>
-                                <p class="card-text">Some quick example text to build on the card title and make up the
-                                    bulk of the card's content.</p>
-                                <a href="#" class="card-link">Take Test</a>
-                            </div>
-                        </div>
-                    </div>
-
-                </div> -->
-
-                <!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-                <script>
-                    $(document).ready(function () {
-                        // Make an AJAX GET request to getExam.php with id=1
-                        $.ajax({
-                            url: 'BackendAPI/getExam.php?id=<?= $_SESSION['id'] ?>',
-                            type: 'GET',
-                            // data: {
-                            //     id: 1
-                            // },
-                            // dataType: 'json',
-                            success: function (response) {
-                                // Handle the successful response
-                                console.log('Response:', response);
-
-                                // Example: Update HTML content with response data
-                                $('#result').html('<p>ID: ' + response.id + '</p><p>Message: ' + response.message + '</p>');
-                            },
-                            error: function (xhr, status, error) {
-                                // Handle errors
-                                console.error('Error:', error);
-
-                                // Example: Display error message
-                                $('#result').text('Error occurred: ' + error);
-                            }
-                        });
-                    });
-
-                </script> -->
 
                 <!-- content-wrapper ends -->
                 <?php include_once('components/footer.php'); ?>

@@ -43,36 +43,21 @@ if (isset($_GET['id'])) {
             <div class="content-wrapper">
                 <?php
                 if ($msg) {
-                    echo "
-            <section>                   
-              <div class='container-fluid'>
-                <div class='row'>
-                  " . $msg . "
-                </div>
-              </div>
-            </section>
-            ";
+                    echo "<section><div class='container-fluid'><div class='row'>" . $msg . "</div></div></section>";
                 }
                 ?>
                 <section>
                     <div class='container-fluid'>
-                        <div class='row' id="message">
-
-                        </div>
+                        <div class='row' id="message"></div>
                     </div>
                 </section>
                 <div class="page-header">
                     <h3 class="page-title">
-                        <a href="students.php" class="txt-primary" style="font-size: 30px !important;"><i
+                        <a href="exam.php" class="txt-primary" style="font-size: 30px !important;"><i
                                 class="mdi mdi-arrow-left"></i></a>
                     </h3>
                     <nav aria-label="breadcrumb">
-                        <ul class="breadcrumb">
-                            <!-- <li class="breadcrumb-item active" aria-current="page">
-                                <a href="#" class="page-title-icon bg-gradient-primary text-white me-2 mark">Add Course
-                                    <i class="mdi mdi-library-plus"></i></a>
-                            </li> -->
-                        </ul>
+                        <ul class="breadcrumb"></ul>
                     </nav>
                 </div>
                 <?php
@@ -87,9 +72,10 @@ if (isset($_GET['id'])) {
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title">Update Exam</h4>
-                                <form class="forms-sample" id="EditExam" method="post" action="process_form.php">
+                                <form class="forms-sample" id="EditExam">
                                     <div class="form-group">
                                         <label for="exampleSelectCourse">Select Course</label>
+                                        <input type="text" id="id" value="<?= $id ?>" style="display:none;">
                                         <select class="form-control" id="exampleSelectCourse" name="course" required>
                                             <option value="<?= htmlspecialchars($row['course_name']) ?>" selected
                                                 style="display:none;">
@@ -129,8 +115,8 @@ if (isset($_GET['id'])) {
                                                 style="display:none;">
                                                 <?= htmlspecialchars($row['mode']) ?>
                                             </option>
-                                            <option>Live</option>
-                                            <option>Scheduled</option>
+                                            <option value="Live">Live</option>
+                                            <option value="Scheduled">Scheduled</option>
                                         </select>
                                     </div>
 
@@ -138,6 +124,11 @@ if (isset($_GET['id'])) {
                                         <label for="exampleInputDateTime">Select Date Time</label>
                                         <input type="datetime-local" value="<?= htmlspecialchars($row['date_time']) ?>"
                                             class="form-control" id="exampleInputDateTime" name="date_time">
+                                    </div>
+                                    <div class="form-group" id="dateTimeGroup2" style="display: none;">
+                                        <label for="exampleInputDateTime2">Select End Date Time</label>
+                                        <input type="datetime-local" value="<?= htmlspecialchars($row['date_time2']) ?>"
+                                            class="form-control" id="exampleInputDateTime2" name="dateTime2">
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputTime">Time Limit (in minutes)</label>
@@ -152,9 +143,18 @@ if (isset($_GET['id'])) {
                                             class="form-control" id="exampleInputQuestion" name="number_of_questions"
                                             placeholder="Number of questions" required>
                                     </div>
-
+                                    <div class="form-group">
+                                        <label for="pMark">Positive Marking</label>
+                                        <input type="text" value="<?= htmlspecialchars($row['posititve']) ?>"
+                                            class="form-control" id="pMark" placeholder="Marks on Correct Answer">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="nMark">Negative Marking</label>
+                                        <input type="text" value="<?= htmlspecialchars($row['negaitve']) ?>"
+                                            class="form-control" id="nMark" placeholder="Marks on wrong answer">
+                                    </div>
                                     <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
-                                    <button type="button" class="btn btn-light">Cancel</button>
+                                    <!-- <button type="button" class="btn btn-light">Cancel</button> -->
                                 </form>
 
                             </div>
@@ -163,7 +163,6 @@ if (isset($_GET['id'])) {
                 </div>
 
                 <!-- Include jQuery library -->
-                <!-- Include jQuery library -->
                 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
                 <script>
@@ -171,31 +170,44 @@ if (isset($_GET['id'])) {
 
                     $(document).ready(function () {
                         var form = $('#EditExam');
+                        $("#exampleSelectMode").change(function () {
+                            var selectedMode = $(this).val();
 
+                            if (selectedMode === "Scheduled") {
+                                $("#dateTimeGroup").show();
+                                $("#dateTimeGroup2").show();
+                            } else {
+                                $("#dateTimeGroup").hide();
+                                $("#dateTimeGroup2").hide();
+                            }
+                        });
                         form.submit(function (event) {
                             // Prevent the default form submission
                             event.preventDefault();
 
                             // Collect form data
                             var formData = {
+                                id: $('#id').val(),
                                 course: $("#exampleSelectCourse").val(),
-                                exam_name: $("#exampleInputName1").val(),
+                                examName: $("#exampleInputName1").val(),
                                 instructions: $("#exampleInstruction").val(),
                                 mode: $("#exampleSelectMode").val(),
-                                date_time: $("#exampleInputDateTime").val(),
-                                time_limit: $("#exampleInputTime").val(),
-                                number_of_questions: $("#exampleInputQuestion").val()
+                                dateTime: $("#exampleInputDateTime").val(),
+                                dateTime2: $("#exampleInputDateTime2").val(),
+                                timeLimit: $("#exampleInputTime").val(),
+                                numberOfQuestions: $("#exampleInputQuestion").val(),
+                                pMark: $("#pMark").val(),
+                                nMark: $("#nMark").val(),
                             };
-
-                            console.log(JSON.stringify(formData));
 
                             // Send the data to updateExam.php using AJAX
                             $.ajax({
                                 type: "POST",
-                                url: "updateExam.php",
-                                data: JSON.stringify(formData),
+                                url: "BackendAPI/updateExam.php",
+                                data: formData,
                                 dataType: "json", // Specify the expected data type
                                 success: function (response) {
+                                    console.log(response);
                                     if (response.status === "success") {
                                         out.html("<div class='alert alert-success alert-dismissible'>" +
                                             "<strong>" + response.message + "</strong></div>");
@@ -206,14 +218,10 @@ if (isset($_GET['id'])) {
 
                                     // Scroll to the top of the page
                                     $('html, body').animate({ scrollTop: 0 }, 'slow');
-
-                                    setTimeout(function () {
-                                        location.reload(true); // Clear the output after resetting
-                                    }, 2000);
                                 },
-                                error: function (error) {
-                                    console.log("found error");
-                                    console.log("Error:", error);
+                                error: function (xhr, status, error) {
+                                    console.log("AJAX Request Error:", error);
+                                    alert("AJAX Request Error: " + error);
                                 }
                             });
                         });
