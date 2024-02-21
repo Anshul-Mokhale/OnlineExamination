@@ -76,16 +76,33 @@ $vauesd = htmlspecialchars($_GET['examId']);
         </div>
         <div class="col-3 user">
             <div class="top1">
+                <?php
+                $sdtuid = $_GET['id'];
+                $studimg = "SELECT * FROM students WHERE id = '$sdtuid'";
+                $reesult = $mysql_connection->query($studimg);
+                if ($reesult->num_rows > 0) {
+                    $row = $reesult->fetch_assoc();
+                    $path = $row['Simage']; // Assuming the image path is fetched from the database
+                    // Replace '../' with 'admin/'
+                    $path = str_replace('..', 'admin', $path);
+                    // // Output the modified path
+                    // echo $path;
+                }
+                ?>
                 <div class="cc">
-                    <img src="admin/uploads/65c2361510ef6/Screenshot (2).png" alt="">
+                    <img src="<?= $path ?>" alt="">
                 </div>
                 <div class="value">
-                    <h3>Anshul Mokhale</h3>
-                    <p>87668655732</p>
+                    <h3>
+                        <?= $row['name'] ?>
+                    </h3>
+                    <p>
+                        <?= $row['phone'] ?>
+                    </p>
                 </div>
             </div>
             <div id="sidebar" class="pp"></div>
-            <a href="#" class="submitBtn" id="subBtn">Submit Test</a>
+            <a class="submitBtn" id="subBtn">Submit Test</a>
         </div>
     </div>
 
@@ -480,7 +497,7 @@ $vauesd = htmlspecialchars($_GET['examId']);
                             // alert(data); // Display the response message
                             // Redirect to new.php or handle response as needed
                             console.log(data);
-                            // window.location.href = 'thanYou.php'; // Uncomment this line if you want to redirect
+                            window.location.href = 'thanYou.php'; // Uncomment this line if you want to redirect
                         })
                         .catch(error => {
                             console.error('Error submitting answers:', error.message);

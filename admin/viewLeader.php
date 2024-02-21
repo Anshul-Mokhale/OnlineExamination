@@ -112,7 +112,7 @@ $examId = $_GET['examId'];
                                                 </td>
                                                 <td>' . $reow['name'] . '</td>
                                                 <td>' . $reow2['exam_name'] . '</td>
-                                                <td>' . $row['total'] . '%</td>
+                                                <td>' . number_format($row['total'], 2) . '%</td>
                                             </tr>';
                                                 $Rank++;
                                             }

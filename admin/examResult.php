@@ -116,40 +116,52 @@ $examId = $_GET['examId'];
                         <div class='card'>
                             <div class='card-body' style="align-items:start">
                                 <?php
+
                                 $answers = array();
 
-                                $getAnswer = "SELECT answers FROM submissions WHERE student_id = '$sid' AND exam_id = '$examId'";
-                                $Aanswer = $mysql_connection->query($getAnswer);
+                                $getAnswer = "SELECT answers FROM submissions WHERE student_id = ? AND exam_id = ?";
+                                $stmt3 = $mysql_connection->prepare($getAnswer);
+                                $stmt3->bind_param("ii", $sid, $examId);
+                                $stmt3->execute();
+                                $result3 = $stmt3->get_result();
 
-                                if ($Aanswer->num_rows > 0) {
-                                    $row = $Aanswer->fetch_assoc();
+
+                                if ($result3->num_rows > 0) {
+                                    $row = $result3->fetch_assoc();
                                     $answers = json_decode($row['answers'], true);
                                 }
+                                // print_r($answers);
+                                
+                                $queee = "SELECT * FROM sections WHERE id = ?";
+                                $stmt4 = $mysql_connection->prepare($queee);
+                                $stmt4->bind_param("i", $examId);
+                                $stmt4->execute();
+                                $result4 = $stmt4->get_result();
 
-                                $examId = mysqli_real_escape_string($mysql_connection, $examId);
-
-                                $queee = "SELECT * FROM sections WHERE id = '$examId'";
-                                $reu = $mysql_connection->query($queee);
                                 $rowses = array();
                                 $swooss = array();
-                                $sectionName = "";
+                                $section = "";
 
-                                if ($reu->num_rows > 0) {
-                                    while ($rowee = $reu->fetch_assoc()) {
+                                if ($result4->num_rows > 0) {
+                                    while ($rowee = $result4->fetch_assoc()) {
                                         $rowses[] = $rowee;
-                                        $sectionName = $rowee['name'];
+                                        $section = $rowee['name'];
                                     }
                                 }
+                                $v = 0;
 
                                 foreach ($answers as $sectionKey => $section_answers) {
                                     echo "<h1>Section: $sectionKey </h1>";
                                     foreach ($section_answers as $question => $answer) {
-                                        $veddd = "SELECT * FROM question_$examId WHERE question = '$question'";
-                                        $restultt = $mysql_connection->query($veddd);
+                                        $escapedQuestion = $mysql_connection->real_escape_string($question);
+                                        // echo $question;
+                                        $veddd = "SELECT * FROM question_{$examId} WHERE question = '$escapedQuestion'";
+                                        $result5 = $mysql_connection->query($veddd);
 
-                                        if ($restultt->num_rows > 0) {
-                                            while ($swss = $restultt->fetch_assoc()) {
-                                                $swooss[] = $swss;
+
+                                        if ($result5->num_rows > 0) {
+                                            while ($swss = $result5->fetch_assoc()) {
+                                                // $swooss[] = $swss;
                                                 if (isset($swss['description']) && $swss['description'] != "") {
                                                     echo "<h5>Description: " . $swss['description'] . "</h5>";
                                                 }
@@ -179,6 +191,7 @@ $examId = $_GET['examId'];
                                     }
                                     echo "<br>";
                                 }
+
                                 ?>
                             </div>
                         </div>

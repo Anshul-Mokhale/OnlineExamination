@@ -109,7 +109,7 @@ if (!empty($_GET['msg']) && $_GET['msg'] === "login") {
                                             "<td>" + item['name'] + "</td>" +
                                             "<td>" + item['email'] + "</td>" +
                                             "<td>" + item['phone'] + "</td>" +
-                                            "<td><a href='updateStudent.php?id=" + item['id'] + "' class='btn-gradient-light' style ='padding: 5px; text-decoration: none;'>Update</a> <button class='btn btn-danger btn-sm deleteBtn' data-id='" + item['id'] + "'>Delete</button></td>"
+                                            "<td><a href='updateStudent.php?id=" + item['id'] + "' class='btn-gradient-light' style ='padding: 5px; text-decoration: none;'>Update</a> <a href='updateImg.php?id=" + item['id'] + "' class='btn-gradient-success' style ='padding: 5px; text-decoration: none;'>Update Images</a> <button class='btn btn-danger btn-sm deleteBtn' data-id='" + item['id'] + "'>Delete</button></td>"
                                         "</tr>";
                                         i++;
                                         tableBody.append(row);

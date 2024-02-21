@@ -53,11 +53,14 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                     </div>
                 </section>
                 <div class="page-header">
-                    <h3 class="page-title">
-                        <span class="page-title-icon bg-gradient-primary text-white me-2">
-                            <i class="mdi mdi-home"></i>
-                        </span> Live Exam
-                    </h3>
+                    <a href="index.php">
+                        <h3 class="page-title">
+                            <span class="page-title-icon bg-gradient-primary text-white me-2">
+                                <i class="mdi mdi-home"></i>
+                            </span>
+                        </h3>
+                    </a>
+                    <h3 class="page-title">Live Exam</h3>
                     <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item active" aria-current="page">
@@ -73,11 +76,6 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                 // Convert the JSON string to an array
                 $courses = json_decode($coursesJson, true);
 
-                // Print the array
-                // echo "<pre>";
-                // print_r($courses);
-                // echo "</pre>";
-                
                 // Define an empty array to store course details
                 $courseDetails = array();
 
@@ -112,9 +110,10 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                                             $getSub = "SELECT * FROM submissions WHERE student_id = '$si' AND exam_id = '$ei'";
                                             $reu = $mysql_connection->query($getSub);
                                             if ($reu->num_rows > 0) {
-                                                echo "<a onclick=\"alert('You have already given the exam')\" class='btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn'>Take Test</a>";
+                                                echo "<a onclick=\"alert('You have already given the exam')\" class='btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn'>Attempted</a>";
                                             } else {
-                                                echo "<a href='giveExam.php?id=" . $_SESSION['id'] . "&examId=" . $rows['id'] . "' class='btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn' id='Give'>Take Test</a>";
+                                                $examUrl = "giveExam.php?id=" . $si . "&examId=" . $ei;
+                                                echo "<a class='btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn' style='cursor:pointer;text-decoration:none;' onclick=\"openRestrictedWindow('$examUrl')\">Give Exam</a>";
                                             }
 
                                             echo "</div>
@@ -139,6 +138,16 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                     echo "Invalid input for course data.";
                 }
                 ?>
+
+                <script>
+                    function openRestrictedWindow(url) {
+                        // Define features for the new window
+                        var features = "width=1200,height=780,resizable=no,scrollbars=yes";
+
+                        // Open the URL in a new window with the specified features
+                        window.open(url, "_blank", features);
+                    }
+                </script>
 
 
                 <!-- content-wrapper ends -->

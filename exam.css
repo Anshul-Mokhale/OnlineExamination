@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
-/* body {
+body {
     -webkit-user-select: none !important;
     -moz-user-select: none !important;
     -ms-user-select: none !important;
     user-select: none !important;
-} */
+}
 
 .popup-overlay {
     display: none;
@@ -235,7 +235,7 @@
     border: 1px solid #4973bd;
     background-color: #4973bd;
     color: white;
-    padding: 4px;
+    padding: 6px 4px 6px 4px;
     text-decoration: none;
     text-align: center;
 }

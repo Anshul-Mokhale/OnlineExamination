@@ -1,0 +1,174 @@
+<?php
+include 'components/includes/connection.php';
+if (isset($_GET['id'])) {
+    $sid = $_GET['id'];
+    $examId = $_GET['examId'];
+}
+?>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>PHP Print</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="print.css" media="print">
+    <style>
+        .log {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .log img {
+            width: 240px !important;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class='col-md-12' style="margin-bottom: 1em;">
+                <div class="log">
+                    <img src="assets/images/IMAGELOGO.svg" alt="">
+                    <div class="text-center">
+                        <button onclick="window.print();" class="btn btn-primary" id="print-btn">Print</button>
+                    </div>
+                </div>
+                <div class='card'>
+                    <div class='card-body' style="align-items:start">
+                        <?php
+                        $swq = "SELECT * FROM exams WHERE id = ?";
+                        $stmt1 = $mysql_connection->prepare($swq);
+                        $stmt1->bind_param("i", $examId);
+                        $stmt1->execute();
+                        $result1 = $stmt1->get_result();
+
+                        if ($result1->num_rows > 0) {
+                            $deta1 = $result1->fetch_assoc();
+                        }
+
+                        $swq2 = "SELECT total FROM submissions WHERE student_id = ? AND exam_id = ?";
+                        $stmt2 = $mysql_connection->prepare($swq2);
+                        $stmt2->bind_param("ii", $sid, $examId);
+                        $stmt2->execute();
+                        $result2 = $stmt2->get_result();
+
+                        if ($result2->num_rows > 0) {
+                            $deta2 = $result2->fetch_assoc();
+                        }
+                        ?>
+                        <h6>Course Name:
+                            <?= $deta1['course_name'] ?>
+                        </h6>
+                        <h6>Exam Name:
+                            <?= $deta1['exam_name'] ?>
+                        </h6>
+                        <h6>Correct Answer Marking:
+                            <?= $deta1['posititve'] ?>
+                        </h6>
+                        <h6>Negative Marking:
+                            <?= $deta1['negaitve'] ?>
+                        </h6>
+                        <h6>Total Percentage:
+                            <?= number_format($deta2['total'], 2) ?>%
+                        </h6>
+                    </div>
+                </div>
+            </div>
+            <div class='col-md-12'>
+                <div class='card'>
+                    <div class='card-body' style="align-items:start">
+                        <?php
+
+                        $answers = array();
+
+                        $getAnswer = "SELECT answers FROM submissions WHERE student_id = ? AND exam_id = ?";
+                        $stmt3 = $mysql_connection->prepare($getAnswer);
+                        $stmt3->bind_param("ii", $sid, $examId);
+                        $stmt3->execute();
+                        $result3 = $stmt3->get_result();
+
+
+                        if ($result3->num_rows > 0) {
+                            $row = $result3->fetch_assoc();
+                            $answers = json_decode($row['answers'], true);
+                        }
+                        // print_r($answers);
+                        
+                        $queee = "SELECT * FROM sections WHERE id = ?";
+                        $stmt4 = $mysql_connection->prepare($queee);
+                        $stmt4->bind_param("i", $examId);
+                        $stmt4->execute();
+                        $result4 = $stmt4->get_result();
+
+                        $rowses = array();
+                        $swooss = array();
+                        $section = "";
+
+                        if ($result4->num_rows > 0) {
+                            while ($rowee = $result4->fetch_assoc()) {
+                                $rowses[] = $rowee;
+                                $section = $rowee['name'];
+                            }
+                        }
+                        $v = 0;
+
+                        foreach ($answers as $sectionKey => $section_answers) {
+                            echo "<h3>Section: $sectionKey </h3>";
+                            foreach ($section_answers as $question => $answer) {
+                                $escapedQuestion = $mysql_connection->real_escape_string($question);
+                                // echo $question;
+                                $veddd = "SELECT * FROM question_{$examId} WHERE question = '$escapedQuestion'";
+                                $result5 = $mysql_connection->query($veddd);
+
+
+                                if ($result5->num_rows > 0) {
+                                    while ($swss = $result5->fetch_assoc()) {
+                                        // $swooss[] = $swss;
+                                        if (isset($swss['description']) && $swss['description'] != "") {
+                                            echo "<strong>Description: </strong>" . $swss['description'];
+                                            echo "<br>";
+                                        }
+                                        echo "<strong>Question: </strong>" . $swss['question'];
+                                        echo '<ul>';
+                                        $choices = json_decode($swss['choices'], true);
+                                        foreach ($choices as $choice) {
+                                            if ($choice !== "") {
+                                                if ($choice == $swss['correct_answer']) {
+                                                    echo "<li style='color:green; font-weight:bold;'>$choice</li>";
+                                                } else {
+                                                    echo "<li>$choice</li>";
+                                                }
+                                            }
+                                        }
+                                        echo '</ul>';
+
+                                        if ($answer == $swss['correct_answer']) {
+                                            echo "<p><strong>Given Anwer: </strong> " . $answer . " <i class='fa-solid fa-check'></i></p>";
+                                        } else {
+                                            echo "<p><strong>Given Anwer: </strong> " . $answer . " <i class='fa-solid fa-xmark'></i></p>";
+                                        }
+
+                                        echo "<br>";
+                                    }
+                                }
+                            }
+                            echo "<br>";
+                        }
+
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

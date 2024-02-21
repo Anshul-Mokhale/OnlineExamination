@@ -59,11 +59,13 @@ $examId = $_GET['examId'];
                     </div>
                 </section>
                 <div class="page-header">
-                    <h3 class="page-title">
-                        <span class="page-title-icon bg-gradient-primary text-white me-2">
-                            <i class="mdi mdi-home"></i>
-                        </span> View Results
-                    </h3>
+                    <a href="index.php">
+                        <h3 class="page-title">
+                            <span class="page-title-icon bg-gradient-primary text-white me-2">
+                                <i class="mdi mdi-home"></i>
+                            </span>
+                        </h3>
+                    </a>
                     <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item active" aria-current="page">
@@ -113,7 +115,7 @@ $examId = $_GET['examId'];
                                                 </td>
                                                 <td>' . $reow['name'] . '</td>
                                                 <td>' . $reow2['exam_name'] . '</td>
-                                                <td>' . $row['total'] . '%</td>
+                                                <td>' . number_format($row['total'], 2) . '%</td>
                                             </tr>';
                                                 $Rank++;
                                             }

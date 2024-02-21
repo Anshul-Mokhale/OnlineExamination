@@ -53,11 +53,14 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                     </div>
                 </section>
                 <div class="page-header">
-                    <h3 class="page-title">
-                        <span class="page-title-icon bg-gradient-primary text-white me-2">
-                            <i class="mdi mdi-home"></i>
-                        </span> Scheduled Exam
-                    </h3>
+                    <a href="index.php">
+                        <h3 class="page-title">
+                            <span class="page-title-icon bg-gradient-primary text-white me-2">
+                                <i class="mdi mdi-home"></i>
+                            </span>
+                        </h3>
+                    </a>
+                    <h3 class="page-title">Scheduled Exam</h3>
                     <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item active" aria-current="page">

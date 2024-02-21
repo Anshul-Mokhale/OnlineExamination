@@ -54,6 +54,7 @@ if (!($curPageName == 'login.php' || $curPageName == 'forgot_password.php')) {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz@6..12&display=swap" rel="stylesheet">
+
   <style>
     body {
       font-family: 'Nunito Sans', sans-serif !important;

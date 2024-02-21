@@ -17,9 +17,17 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
-
+    body {
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+        user-select: none !important;
+    }
 
     .NavBar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         padding: 0.5em;
         color: white;
         background-color: #4973bd;
@@ -134,11 +142,16 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
 <body>
     <nav class="NavBar">
         <h2>Instruction</h2>
+
     </nav>
     <div class="row" style="height: 88vh; margin-top:10px;text-align:justify;">
         <div class="col-9" style="border-right: 2px solid #959595;">
+
             <div class="box">
-                <h3 style="text-align:center;">Please Read the following instructions carefully</h3>
+                <div class="fflex" style="display:flex; align-items:center; justify-content:space-between;">
+                    <h3>Please Read the following instructions carefully</h3>
+                    <h6 id="timer">Timer:</h6>
+                </div>
 
                 <ol>
                     <h6 style="text-decoration:underline;">General instructions:</h6>
@@ -159,10 +172,10 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                             </li>
 
                             <li>
-                                The marked for review status simply act as a reminder that you have set to look the
+                                <!-- The marked for review status simply act as a reminder that you have set to look the
                                 question again. <span class="redcolor">if answered is selected for questions that is
                                     marked for review,
-                                    the answered is considerd in the final evaluations.</span>
+                                    the answered is considerd in the final evaluations.</span> -->
                             </li>
                         </ul>
                     </li>
@@ -226,17 +239,65 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                 }
             </script>
 
-            <a class="d-block text-center" style="cursor:pointer;text-decoration:none;"
-                onclick="openRestrictedWindow('exam.php?id=<?= $_GET['id'] ?>&examId=<?= $_GET['examId'] ?>')">Next>></a>
-            <!-- <a href="exam.php?id=<?= $_GET['id'] ?>&examId=<?= $_GET['examId'] ?>" class="d-block text-center">Next</a> -->
+            <!-- <a class="d-block text-center" style="cursor:pointer;text-decoration:none;"
+                onclick="openRestrictedWindow('exam.php?id=<?= $_GET['id'] ?>&examId=<?= $_GET['examId'] ?>')">Next>></a> -->
+            <a href="exam.php?id=<?= $_GET['id'] ?>&examId=<?= $_GET['examId'] ?>"
+                class="d-block text-center next-button">Next</a>
         </div>
         <div class="col-3 user">
-            <img src="admin/uploads/65c2361510ef6/Screenshot (2).png" alt="">
-            <p>8766865573</p>
+            <?php
+            $sdtuid = $_GET['id'];
+            $studimg = "SELECT * FROM students WHERE id = '$sdtuid'";
+            $reesult = $mysql_connection->query($studimg);
+            if ($reesult->num_rows > 0) {
+                $row = $reesult->fetch_assoc();
+                $path = $row['Simage']; // Assuming the image path is fetched from the database
+                // Replace '../' with 'admin/'
+                $path = str_replace('..', 'admin', $path);
+                // // Output the modified path
+                // echo $path;
+            }
+            ?>
+
+            <img src="<?= $path ?>" alt="">
+            <h4>
+                <?= $row['name'] ?>
+            </h4>
+            <p>
+                <?= $row['phone'] ?>
+            </p>
         </div>
     </div>
 
     <script>
+        function startTimer(duration, display) {
+            var timer = duration, minutes, seconds;
+            setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = "Timer: " + minutes + "m " + seconds + "s";
+
+                if (--timer < 0) {
+                    timer = 0;
+                    // clearInterval(timerInterval);
+                    // Automatically click the Next button when timer reaches zero
+                    var nextButton = document.querySelector('.next-button');
+                    if (nextButton) {
+                        nextButton.click();
+                    }
+                }
+            }, 1000);
+        }
+
+        window.onload = function () {
+            var timerDisplay = document.getElementById('timer');
+            var timerDuration = 60; // Timer duration in seconds
+            startTimer(timerDuration, timerDisplay);
+        };
         function openFullScreen(event) {
             event.preventDefault();
             var url = event.target.href;
