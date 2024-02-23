@@ -17,6 +17,21 @@ if (!empty($_GET['msg']) && $_GET['msg'] === "login") {
     .table-responsive {
         overflow-x: auto !important;
     }
+
+    .remove-icon {
+        margin-left: 5px;
+        cursor: pointer;
+    }
+
+    .scroll-top-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        display: none;
+        /* Initially hide the button */
+        z-index: 9999;
+        /* Set a high z-index to ensure it appears above other elements */
+    }
 </style>
 
 <body>
@@ -86,6 +101,8 @@ if (!empty($_GET['msg']) && $_GET['msg'] === "login") {
                             </div>
                         </div>
                     </div>
+                    <button id="scrollTopBtn" class="btn btn-primary scroll-top-btn" title="Go to top"><i
+                            class="mdi mdi-arrow-up"></i></button>
                     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
                     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
                     <script>
@@ -171,6 +188,22 @@ if (!empty($_GET['msg']) && $_GET['msg'] === "login") {
                                     }
                                 });
                             }
+                        });
+                        $(window).scroll(function () {
+                            // If user has scrolled more than 20px from the top
+                            if ($(this).scrollTop() > 20) {
+                                // Show the scroll-to-top button
+                                $('#scrollTopBtn').fadeIn();
+                            } else {
+                                // Otherwise, hide the button
+                                $('#scrollTopBtn').fadeOut();
+                            }
+                        });
+
+                        // Function to handle button click
+                        $('#scrollTopBtn').click(function () {
+                            // Scroll to the top of the page with animation
+                            $('html, body').animate({ scrollTop: 0 }, 800);
                         });
                     </script>
                     <!-- content-wrapper ends -->

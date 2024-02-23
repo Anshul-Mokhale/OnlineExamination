@@ -29,6 +29,21 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
             .row {
                 margin-top: 2em !important;
             }
+
+            .remove-icon {
+                margin-left: 5px;
+                cursor: pointer;
+            }
+
+            .scroll-top-btn {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                display: none;
+                /* Initially hide the button */
+                z-index: 9999;
+                /* Set a high z-index to ensure it appears above other elements */
+            }
         </style>
         <div class="main-panel">
             <div class="content-wrapper">
@@ -120,7 +135,7 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                                     </div>
                                 </div>";
                                         } else {
-                                            echo "Nothing found";
+                                            // echo "Nothing found";
                                         }
                                     }
                                 } else {
@@ -138,15 +153,40 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                     echo "Invalid input for course data.";
                 }
                 ?>
-
+                <button id="scrollTopBtn" class="btn btn-primary scroll-top-btn" title="Go to top"><i
+                        class="mdi mdi-arrow-up"></i></button>
+                <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
                 <script>
                     function openRestrictedWindow(url) {
                         // Define features for the new window
                         var features = "width=1200,height=780,resizable=no,scrollbars=yes";
 
                         // Open the URL in a new window with the specified features
-                        window.open(url, "_blank", features);
+                        var popup = window.open(url, "_blank", features);
+
+                        // Attach event listener to detect when the popup window is closed
+                        popup.onbeforeunload = function () {
+                            // Reload the page when the popup window is closed
+                            location.reload();
+                        };
                     }
+
+                    $(window).scroll(function () {
+                        // If user has scrolled more than 20px from the top
+                        if ($(this).scrollTop() > 20) {
+                            // Show the scroll-to-top button
+                            $('#scrollTopBtn').fadeIn();
+                        } else {
+                            // Otherwise, hide the button
+                            $('#scrollTopBtn').fadeOut();
+                        }
+                    });
+
+                    // Function to handle button click
+                    $('#scrollTopBtn').click(function () {
+                        // Scroll to the top of the page with animation
+                        $('html, body').animate({ scrollTop: 0 }, 800);
+                    });
                 </script>
 
 

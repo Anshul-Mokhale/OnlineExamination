@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         )";
 
         if ($mysql_connection->query($createTableQuery) === TRUE) {
-            echo json_encode(["message" => "Table question_$examName created successfully"]);
+            // echo json_encode(["newMsg" => "Table question_$examName created successfully"]);
         } else {
             echo json_encode(["error" => "Error creating table: " . $mysql_connection->error]);
         }

@@ -37,7 +37,7 @@
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item"> <a class="nav-link" href="liveExam.php">Live Exam</a></li>
                     <li class="nav-item"> <a class="nav-link" href="scheduledExam.php">Scheduled Exams</a></li>
-                    <!-- <li class="nav-item"> <a class="nav-link" href="#">Practice Exams</a></li> -->
+                    <li class="nav-item"> <a class="nav-link" href="practiceExam.php">Practice Exams</a></li>
                 </ul>
             </div>
         </li>
@@ -51,6 +51,7 @@
             <div class="collapse" id="Result">
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item"> <a class="nav-link" href="Result.php">Result By Exam</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="Resultmodal.php">Result Of Practice Exam</a></li>
                     <li class="nav-item"> <a class="nav-link" href="leaderExam.php">LeaderBoard</a></li>
                 </ul>
             </div>

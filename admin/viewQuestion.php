@@ -138,6 +138,16 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
         margin-left: 5px;
         cursor: pointer;
     }
+
+    .scroll-top-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        display: none;
+        /* Initially hide the button */
+        z-index: 9999;
+        /* Set a high z-index to ensure it appears above other elements */
+    }
 </style>
 <div class="container-scroller">
     <?php include_once('components/navbar.php'); ?>
@@ -232,7 +242,7 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                                             <textarea class="form-control" id="Explanation"
                                                 placeholder="Enter Explanation" rows="2"></textarea>
                                         </div>
-                                        <button type="button" id="submitForm"
+                                        <button type="submit" id="submitForm"
                                             class="btn btn-gradient-primary me-2">Submit</button>
                                         <!-- Close Button -->
                                         <button type="button" id="closeForm"
@@ -326,6 +336,8 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                     }
                     ?>
                 </div>
+                <button id="scrollTopBtn" class="btn btn-primary scroll-top-btn" title="Go to top"><i
+                        class="mdi mdi-arrow-up"></i></button>
 
 
 
@@ -344,20 +356,7 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                         });
 
                         // Function to handle edit section button clicks
-                        $('.editSectionBtn').click(function (event) {
-                            event.preventDefault();
-                            var sectionId = $(this).data('id');
-                            var sectionName = $(`tr[data-id='${sectionId}'] .section-name`).text();
 
-                            // Assuming input fields are named similarly for both add and edit section
-                            $('#inputSecton').val(sectionName);
-
-                            // Assuming your form action is different for add and edit section, modify it accordingly
-                            $('.forms-sample').attr('action', 'BackendAPI/editSection.php');
-
-                            $('.pupup').addClass('active');
-                            $('.overlay').addClass('active');
-                        });
 
                         // Function to handle cancel button click
                         $('.cancel-btn').click(function () {
@@ -389,6 +388,7 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
 
                         // Handle form submission
                         $('#submitForm').click(function () {
+                            event.preventDefault();
                             // Get values from form fields
                             var examName = $('#examName').val();
                             var section = $('#section').val(); // Make sure there is an input field with ID 'section'
@@ -488,6 +488,22 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                                     }
                                 });
                             }
+                        });
+                        $(window).scroll(function () {
+                            // If user has scrolled more than 20px from the top
+                            if ($(this).scrollTop() > 20) {
+                                // Show the scroll-to-top button
+                                $('#scrollTopBtn').fadeIn();
+                            } else {
+                                // Otherwise, hide the button
+                                $('#scrollTopBtn').fadeOut();
+                            }
+                        });
+
+                        // Function to handle button click
+                        $('#scrollTopBtn').click(function () {
+                            // Scroll to the top of the page with animation
+                            $('html, body').animate({ scrollTop: 0 }, 800);
                         });
                     });
 

@@ -12,14 +12,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode($json_data, true); // true to get an associative array
 
     // Check if all required fields are present
-    if (!isset($data['course'], $data['examName'], $data['instructions'], $data['mode'], $data['dateTime'], $data['timeLimit'], $data['numberOfQuestions'])) {
+    if (!isset($data['course'], $data['examName'], $data['mode'], $data['dateTime'], $data['timeLimit'], $data['numberOfQuestions'])) {
         $response['status'] = "error";
         $response['message'] = "Please provide all required fields";
     } else {
         // Retrieve form data
         $course = mysqli_real_escape_string($mysql_connection, $data['course']);
         $examName = mysqli_real_escape_string($mysql_connection, $data['examName']);
-        $instructions = mysqli_real_escape_string($mysql_connection, $data['instructions']);
         $mode = mysqli_real_escape_string($mysql_connection, $data['mode']);
         $dateTime = mysqli_real_escape_string($mysql_connection, $data['dateTime']);
         $dateTime2 = mysqli_real_escape_string($mysql_connection, $data['dateTime2']);
@@ -31,8 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Perform validation if needed
 
         // Save data to the database
-        $insertSql = "INSERT INTO exams (course_name, exam_name, instructions, mode, date_time,date_time2, time_limit, number_of_questions,posititve,negaitve)
-                      VALUES ('$course', '$examName', '$instructions', '$mode', '$dateTime','$dateTime2', '$timeLimit', '$numberOfQuestions',$pMark,$nMark)";
+        $insertSql = "INSERT INTO exams (course_name, exam_name, mode, date_time,date_time2, time_limit, number_of_questions,posititve,negaitve)
+                      VALUES ('$course', '$examName', '$mode', '$dateTime','$dateTime2', '$timeLimit', '$numberOfQuestions',$pMark,$nMark)";
 
         if ($mysql_connection->query($insertSql) === TRUE) {
             $response['status'] = "success";

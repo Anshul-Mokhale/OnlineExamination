@@ -50,7 +50,7 @@
             <div class="collapse" id="examses">
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item"> <a class="nav-link" href="exam.php">Offical Exams</a></li>
-                    <!-- <li class="nav-item"> <a class="nav-link" href="#">Demo Exams</a></li> -->
+                    <li class="nav-item"> <a class="nav-link" href="demoexam.php">Demo Exams</a></li>
                 </ul>
             </div>
         </li>
@@ -64,6 +64,7 @@
             <div class="collapse" id="resultst">
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item"> <a class="nav-link" href="viewResult.php">Result</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="viewPracresult.php">Result of Practice Test</a></li>
                     <li class="nav-item"> <a class="nav-link" href="leaderboard.php">LeaderBoard</a></li>
                 </ul>
             </div>

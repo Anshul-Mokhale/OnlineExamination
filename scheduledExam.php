@@ -29,6 +29,21 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
             .row {
                 margin-top: 2em !important;
             }
+
+            .remove-icon {
+                margin-left: 5px;
+                cursor: pointer;
+            }
+
+            .scroll-top-btn {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                display: none;
+                /* Initially hide the button */
+                z-index: 9999;
+                /* Set a high z-index to ensure it appears above other elements */
+            }
         </style>
         <div class="main-panel">
             <div class="content-wrapper">
@@ -127,15 +142,32 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                                         <div class='card-body'>
                                             <h1 class='card-title'>" . $rows['exam_name'] . "</h1>
                                             <h6 class='card-subtitle mb-2 text-body-secondary'>Exam Time Limit:" . $rows['time_limit'] . "</h6>
-                                            <h6 class='card-subtitle mb-2 text-body-secondary'>Exam Will Active On :" . $start_datetime . "</h6>
-                                            <a href='$link_url' class='btn btn-block $link_class btn-lg font-weight-medium auth-form-btn'>$link_text</a>
-                                        </div>
+                                            <h6 class='card-subtitle mb-2 text-body-secondary'>Exam Will Active On :" . $start_datetime . "</h6>";
+                                            // <a href='$link_url' class='btn btn-block $link_class btn-lg font-weight-medium auth-form-btn'>$link_text</a>";
+                                            $si = $_SESSION['id'];
+                                            $ei = $rows['id'];
+                                            $getSub = "SELECT * FROM submissions WHERE student_id = '$si' AND exam_id = '$ei'";
+                                            $reu = $mysql_connection->query($getSub);
+                                            if ($reu->num_rows > 0) {
+                                                echo "<a onclick=\"alert('You have already given the exam')\" class='btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn'>Attempted</a>";
+                                            } else {
+                                                $examUrl = "giveExam.php?id=" . $si . "&examId=" . $ei;
+                                                if ($link_class == "btn-disabled") {
+                                                    echo "<a class='btn btn-block " . $link_class . " btn-lg font-weight-medium auth-form-btn' style='cursor:pointer;text-decoration:none;' onclick=\"openRestrictedWindow('$link_url')\">" . $link_text . "</a>";
+                                                } else {
+                                                    echo "<a class='btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn ' style='cursor:pointer;text-decoration:none;' onclick=\"openRestrictedWindow('$link_url')\">" . $link_text . "</a>";
+                                                }
+
+                                            }
+
+                                            echo "</div>
                                     </div>
                                 </div>";
                                         } else {
-                                            echo "Nothing found";
+                                            // echo "Nothing found";
                                         }
                                     }
+
                                 } else {
                                     echo "Nothing found";
                                 }
@@ -151,7 +183,8 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                     echo "Invalid input for course data.";
                 }
                 ?>
-
+                <button id="scrollTopBtn" class="btn btn-primary scroll-top-btn" title="Go to top"><i
+                        class="mdi mdi-arrow-up"></i></button>
 
                 <!-- <div class="row">
                     <h1>COurse Name</h1>
@@ -223,6 +256,39 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                     });
 
                 </script> -->
+                <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+                <script>
+                    function openRestrictedWindow(url) {
+                        // Define features for the new window
+                        var features = "width=1200,height=780,resizable=no,scrollbars=yes";
+
+                        // Open the URL in a new window with the specified features
+                        var popup = window.open(url, "_blank", features);
+
+                        // Attach event listener to detect when the popup window is closed
+                        popup.onbeforeunload = function () {
+                            // Reload the page when the popup window is closed
+                            location.reload();
+                        };
+                    }
+
+                    $(window).scroll(function () {
+                        // If user has scrolled more than 20px from the top
+                        if ($(this).scrollTop() > 20) {
+                            // Show the scroll-to-top button
+                            $('#scrollTopBtn').fadeIn();
+                        } else {
+                            // Otherwise, hide the button
+                            $('#scrollTopBtn').fadeOut();
+                        }
+                    });
+
+                    // Function to handle button click
+                    $('#scrollTopBtn').click(function () {
+                        // Scroll to the top of the page with animation
+                        $('html, body').animate({ scrollTop: 0 }, 800);
+                    });
+                </script>
 
                 <!-- content-wrapper ends -->
                 <?php include_once('components/footer.php'); ?>

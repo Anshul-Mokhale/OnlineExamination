@@ -107,15 +107,11 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                                     <div class="form-group">
                                         <label for="exampleInputName1">Name of Exam</label>
                                         <input type="text" class="form-control" id="exampleInputName1"
-                                            placeholder="Enter Name Here">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInstruction">Instructions of Exam</label>
-                                        <textarea class="form-control" id="exampleInstruction" rows="4"></textarea>
+                                            placeholder="Enter Name Here" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleSelectMode">Select Mode</label>
-                                        <select class="form-control" id="exampleSelectMode">
+                                        <select class="form-control" id="exampleSelectMode" required>
                                             <option selected disabled>Select One</option>
                                             <option>Live</option>
                                             <option>Scheduled</option>
@@ -136,22 +132,22 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                                     <div class="form-group">
                                         <label for="exampleInputTime">Time Limit(in minutes)</label>
                                         <input type="number" class="form-control" id="exampleInputTime"
-                                            placeholder="Timelimit">
+                                            placeholder="Timelimit" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputQuestion">Number of Question</label>
                                         <input type="number" class="form-control" id="exampleInputQuestion"
-                                            placeholder="Number of question">
+                                            placeholder="Number of question" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="pMark">Positive Marking</label>
                                         <input type="text" class="form-control" id="pMark"
-                                            placeholder="Marks on Correct Answer">
+                                            placeholder="Marks on Correct Answer" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="nMark">Negative Marking</label>
                                         <input type="text" class="form-control" id="nMark"
-                                            placeholder="Marks on wrong answer">
+                                            placeholder="Marks on wrong answer" required>
                                     </div>
 
 
@@ -186,7 +182,6 @@ if (isset($_GET['msg']) && $_GET['msg'] == "login") {
                             var formData = {
                                 course: $("#exampleSelectCourse").val(),
                                 examName: $("#exampleInputName1").val(),
-                                instructions: $("#exampleInstruction").val(),
                                 mode: $("#exampleSelectMode").val(),
                                 dateTime: $("#exampleInputDateTime").val(),
                                 dateTime2: $("#exampleInputDateTime2").val(),

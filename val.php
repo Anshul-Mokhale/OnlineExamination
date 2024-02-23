@@ -9,6 +9,10 @@ $studentId = $postData['studentId'];
 $examId = $postData['examId'];
 $answers = $postData['answers'];
 
+$correct = 0;
+$wrong = 0;
+$notans = 0;
+
 // Fetch positive and negative marks from the database for the exam
 $sql = "SELECT posititve, negaitve FROM exams WHERE id = ?";
 $stmt = $mysql_connection->prepare($sql);
@@ -45,8 +49,12 @@ foreach ($answers as $section => $questions) {
             // Compare the student's answer with the correct answer and update the total score accordingly
             if ($answer == $correctAnswer) {
                 $totalScore += $positiveMark;
+                $correct += 1;
+            } else if ($answer == "") {
+                $notans += 1;
             } else {
                 $totalScore -= $negativeMark;
+                $wrong += 1;
             }
         } else {
             echo "Error: Question details not found!";
@@ -61,9 +69,9 @@ $finalCnt = $count < 0 ? 0 : $count;
 $jsonAnswers = json_encode($answers);
 
 // Insert student ID, exam ID, answers, and total score into the database
-$insertSql = "INSERT INTO submissions (student_id, exam_id, answers, total) VALUES (?, ?, ?, ?)";
+$insertSql = "INSERT INTO submissions (student_id, exam_id, answers, total,correct, wrong,notans) VALUES (?, ?, ?, ?, ?, ?, ?)";
 $stmt = $mysql_connection->prepare($insertSql);
-$stmt->bind_param("iisd", $studentId, $examId, $jsonAnswers, $finalCnt);
+$stmt->bind_param("iisdiii", $studentId, $examId, $jsonAnswers, $finalCnt, $correct, $wrong, $notans);
 
 if ($stmt->execute()) {
     echo "Answers submitted successfully!";
